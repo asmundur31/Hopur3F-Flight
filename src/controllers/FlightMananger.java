@@ -20,22 +20,12 @@ public class FlightMananger {
     return flights;
   }
 
-  /*public Flight[] search(Airport from) {
-    
-    return flights;
-  }*/
-
-  public Flight[] search(Airport to) {
+  public Flight[] search(Airport airport, Boolean to) {
     
     return flights;
   }
 
-  /*public Flight[] search(Date date, Airport from) {
-    
-    return flights;
-  }*/
-
-  public Flight[] search(Date date, Airport to) {
+  public Flight[] search(Date date, Airport airport, Boolean to) {
     
     return flights;
   }
