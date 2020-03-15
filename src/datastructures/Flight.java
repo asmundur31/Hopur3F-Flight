@@ -1,3 +1,7 @@
+package src.datastructures;
+
+import java.util.Date;
+
 public class Flight {
   private Airport to;
   private Airport from;
@@ -11,5 +15,25 @@ public class Flight {
     this.airplain = airplain;
     this.flightNumber = flightNumber;
     this.date = date;
+  }
+
+  public Airport getTo() {
+    return to;
+  }
+
+  public Airport getFrom() {
+    return from;
+  }
+
+  public Airplain getAirplain() {
+    return airplain;
+  }
+
+  public String getFlightNumber() {
+    return flightNumber;
+  }
+
+  public Date getDate() {
+    return date;
   }
 }
