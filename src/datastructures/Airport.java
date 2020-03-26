@@ -3,10 +3,10 @@ package src.datastructures;
 public class Airport {
   private String name;
   private String city;
-  private float latitude;
-  private float longtitude;
+  private double latitude;
+  private double longtitude;
 
-  public Airport(String name, String city, float latitude, float longtitude) {
+  public Airport(String name, String city, double latitude, double longtitude) {
     this.name = name;
     this.city = city;
     this.latitude = latitude;
@@ -21,11 +21,11 @@ public class Airport {
     return city;
   }
 
-  public float getLatitude() {
+  public double getLatitude() {
     return latitude;
   }
 
-  public float getLongtitude() {
+  public double getLongtitude() {
     return longtitude;
   }
 }

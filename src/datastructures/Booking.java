@@ -9,7 +9,7 @@ public class Booking {
   private Flight flight;
   private Date bookingTime;
 
-  public Flight(char seat, int row, Person person, Flight flight, Date bookingTime) {
+  public Booking(char seat, int row, Person person, Flight flight, Date bookingTime) {
     this.seat = seat;
     this.row = row;
     this.person = person;
