@@ -23,10 +23,10 @@ public class FlightManangerTest {
 	    Date date1 = new Date(2020,3,26,20,30);
 	    Date date2 = new Date(2020,3,27,7,30);
 	    Date date3 = new Date(2020,3,27,7,45);
-	    flights[0] = new Flight(rkv,ak,tf123,"RA-1234",date1);
-	    flights[1] = new Flight(ak,isa,tf123,"AI-1234",date2);
-	    flights[2] = new Flight(rkv,isa,tf456,"RI-1234",date1);
-	    flights[3] = new Flight(isa,rkv,tf456,"IR-1234",date3);
+	    flug[0] = new Flight(rkv,ak,tf123,"RA-1234",date1);
+	    flug[1] = new Flight(ak,isa,tf123,"AI-1234",date2);
+	    flug[2] = new Flight(rkv,isa,tf456,"RI-1234",date1);
+	    flug[3] = new Flight(isa,rkv,tf456,"IR-1234",date3);
 	    flightMananger = new FlightMananger(flug);
 	}
 	

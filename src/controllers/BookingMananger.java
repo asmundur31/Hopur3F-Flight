@@ -1,5 +1,7 @@
 package src.controllers;
 
+import java.util.Date;
+
 import src.datastructures.Booking;
 import src.datastructures.Person;
 import src.datastructures.Flight;
@@ -11,8 +13,9 @@ public class BookingMananger {
   }
 
   public Booking create(char s, int r, Person p, Flight flight) {
-    Booking booking = new Booking();
-    return booking;
+	  Date	now = new Date();
+	  Booking booking = new Booking(s,r,p,flight,now);
+	  return booking;
   }
 
   public void delete(Booking b) {
