@@ -1,6 +1,7 @@
 package src.datastructures;
 
 public class Airplain {
+	
   private String name;
   private Boolean[][] availableSeats;
   private Boolean[][] needsAssistance;
