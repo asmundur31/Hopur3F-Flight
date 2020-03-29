@@ -1,6 +1,7 @@
 package src.controllers;
 
 import src.datastructures.Flight;
+import src.database.FlightDB;
 import src.datastructures.Airplain;
 import src.datastructures.Airport;
 
@@ -11,6 +12,9 @@ public class FlightMananger {
 	
 	private Flight[] flights;
 
+	public FlightMananger() {
+  	}
+	
   	public FlightMananger(Flight[] flights) {
   		this.flights = flights;
   	}
@@ -21,16 +25,20 @@ public class FlightMananger {
   	}
 
   	public Flight[] search(Date date) {
+  		// Náum í öll flug úr gagnagrunninum
+  		// FlightDB db = new FlightDB();
+  		// flights = db.search();
+  		// Síum svo út öll flug sem við viljum ekki
   		int count = 0;
   		for(Flight f : flights) {
-  			if(f.getDate().getDate() == date.getDate() && f.getDate().getMonth() == date.getMonth()) {
+  			if(f.getDate().getDate() == date.getDate() && f.getDate().getMonth() == date.getMonth() && f.getDate().getYear() == date.getYear()) {
   				count++;
   			}
   		}
   		Flight[] flug = new Flight[count];
   		count = 0;
   		for(Flight f : flights) {
-  			if(f.getDate().getDate() == date.getDate() && f.getDate().getMonth() == date.getMonth()) {
+  			if(f.getDate().getDate() == date.getDate() && f.getDate().getMonth() == date.getMonth() && f.getDate().getYear() == date.getYear()) {
   				flug[count] = f;
   				count++;
   			}

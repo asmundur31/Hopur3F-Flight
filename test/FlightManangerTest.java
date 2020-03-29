@@ -17,6 +17,7 @@ public class FlightManangerTest {
 	
 	@Before
 	public void setUp() {
+		// Búum til lista af fjórum flugum
 	    Flight[] flug = new Flight[5];
 	    Airport rkv = new Airport("Reykjavíkurflugvöllur", "Reykjavík", 64.129393, -21.940944);
 	    Airport ak = new Airport("Akureyrarflugvöllur", "Akureyri", 65.656987, -18.070608);
@@ -26,12 +27,13 @@ public class FlightManangerTest {
 	    Date date1 = new Date(2020,2,26,20,30);
 	    Date date2 = new Date(2020,2,27,7,30);
 	    Date date3 = new Date(2020,2,27,7,45);
-	    Date date4 = new Date(2020,2,1,8,0);
+	    Date date4 = new Date(2019,2,26,8,45);
 	    flug[0] = new Flight(rkv,ak,tf123,"RA-1234",date1);
 	    flug[1] = new Flight(ak,isa,tf123,"AI-1234",date2);
 	    flug[2] = new Flight(rkv,isa,tf456,"RI-1234",date1);
 	    flug[3] = new Flight(isa,rkv,tf456,"IR-1234",date3);
-	    flug[4] = new Flight(ak,isa,tf123,"AI-5678",date4);
+	    flug[4] = new Flight(isa,ak,tf123,"IA-1234",date4);
+	    // Látum svo FlightMananger fá þessi flug
 	    flightMananger = new FlightMananger(flug);
 	}
 	
@@ -46,7 +48,7 @@ public class FlightManangerTest {
 		// Leitum að flugi á eftirfarandi dagsetningu
 		Date dagsetning = new Date(2020,2,26);
 		flights = flightMananger.search(dagsetning);
-		// Athugum hvort við fáum rétt flug
+		// Athugum hvort við fáum væntan fjölda fluga
 		assertTrue(2==flights.length);
 		// Athugum hvort flugin eru á dagsetningu sem var óskast eftir
 		for(Flight f : flights) {
@@ -78,7 +80,7 @@ public class FlightManangerTest {
 	@Test
  	public void testSearchDate3() {
 		// Leitum að flugi með ólöglegri dagsetningu
-		Date dagsetning = new Date(2020,1,30);
+		Date dagsetning = new Date(2020,1,55);
 		flights = flightMananger.search(dagsetning);
 		// Athugum hvort við fáum tóman lista
 		assertTrue(0==flights.length);
