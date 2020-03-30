@@ -5,29 +5,39 @@ import java.util.Date;
 
 public class FlightDB {
 	
-	public String[] search() {
-		String[] flights = new String[10];
+	private Flight[] flights;
+	
+	public FlightDB() {
+	}
+	
+	public Flight[] search() {
+		// Sækjum flug í gagnagrunnin
 		return flights;
 	}
 	
-	public String[] search(Date date) {
+	public Flight[] search(Date date) {
+		// Sækjum flug í gagnagrunnin
 		return flights;
 	}
 	
-	public String[] search(Airport airport, Boolean to) {
-	    
+	public Flight[] search(Airport airport, Boolean to) {
+		// Sækjum flug í gagnagrunnin
+		return flights;
 	}
 	
-	public String[] search(Date date, Airport airport, Boolean to) {
-	    
+	public Flight[] search(Date date, Airport airport, Boolean to) {
+		// Sækjum flug í gagnagrunnin
+		return flights;
 	}
 	
-	public String[] search(Airport from, Airport to) {
-	    
+	public Flight[] search(Airport from, Airport to) {
+		// Sækjum flug í gagnagrunnin
+		return flights;
 	}
 	
-	public String[] search(Date date, Airport from, Airport to) {
-	    
+	public Flight[] search(Date date, Airport from, Airport to) {
+		// Sækjum flug í gagnagrunnin
+		return flights;
 	}
 	
 	public void createBooking(Booking b) {
