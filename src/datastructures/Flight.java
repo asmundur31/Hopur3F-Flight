@@ -1,15 +1,16 @@
 package src.datastructures;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Flight {
   private Airport to;
   private Airport from;
   private Airplain airplain;
   private String flightNumber;
-  private Date date;
+  private LocalDateTime date;
 
-  public Flight(Airport from, Airport to, Airplain airplain, String flightNumber, Date date) {
+  public Flight(Airport from, Airport to, Airplain airplain, 
+		  String flightNumber, LocalDateTime date) {
     this.to = to;
     this.from = from;
     this.airplain = airplain;
@@ -33,7 +34,7 @@ public class Flight {
     return flightNumber;
   }
 
-  public Date getDate() {
+  public LocalDateTime getDate() {
     return date;
   }
 }
