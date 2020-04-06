@@ -1,6 +1,7 @@
 package src.datastructures;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Flight {
   private String to;
@@ -18,6 +19,8 @@ public class Flight {
     this.date = date;
   }
 
+  // breytti flight svo það var einfaldara að finna flug
+  
  /* public Airport getTo() {
     return to;
   }
@@ -30,36 +33,33 @@ public class Flight {
     return airplain;
   }
 
-  public String getFlightNumber() {
-    return flightNumber;
-  }
-
-  public LocalDateTime getDate() {
-    return date;
   }*/
   
   public String getTo() {
-	    return to;
-	  }
+    return to;
+  }
 
-	  public String getFrom() {
-	    return from;
-	  }
+  public String getFrom() {
+	  return from;
+  }
 
-	  public String getAirplain() {
+  public String getAirplain() {
 	    return airplain;
-	  }
+  }
+  ///////
 
-	  public String getFlightNumber() {
+  public String getFlightNumber() {
 	    return flightNumber;
-	  }
+  }
 
-	  public LocalDateTime getDate() {
-	    return date;
-	  }
+  public LocalDateTime getDate() {
+	  	return date;
+  }
   
   public String toString() {
-	  return "To: " + getTo() + " From: " + getFrom() + " Airplain: " + getAirplain()
-	  			+" FlightNumber: "+ getFlightNumber() + " Date: " + getDate();
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMM d, yyyy hh:mm");
+
+	  String text = date.format(formatter);
+	  return getFrom() +" To "+getTo() + ",    " + text;
   }
 }

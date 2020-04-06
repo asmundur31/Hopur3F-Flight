@@ -41,15 +41,11 @@ public class FlightDB {
 				//System.out.println("from = " + resultSet.getString("from"));
 				//System.out.println("airplain = " + resultSet.getString("airplain"));
 				//System.out.println("flight_number = " + resultSet.getString("flight_number"));
-				System.out.println("date = " + resultSet.getString("date"));
+				//System.out.println("date = " + resultSet.getString("date"));
 				//System.out.println("time = " + resultSet.getString("time"));
 			}
-			System.out.println(list.size());
 		    flights = new Flight[list.size()];
 			list.toArray(flights);
-			for(Flight f : flights) {
-				System.out.println(f);
-			}
 		}
 		
 		catch(SQLException e) {System.err.println(e.getMessage()); }
