@@ -9,14 +9,14 @@ public class Airplain {
 
   public Airplain(String name) {
     this.name = name;
-    this.availableSeats = new Boolean[6][30];
-    for(int i=0; i<6; i++) {
-      for(int j=0; j<30; j++) {
+    this.availableSeats = new Boolean[10][4];
+    for(int i=0; i<10; i++) {
+      for(int j=0; j<4; j++) {
         availableSeats[i][j] = true;
       }
     }
-    this.needsAssistance = new Boolean[6][30];
-    this.wantsFood = new Boolean[6][30];
+    this.needsAssistance = new Boolean[10][4];
+    this.wantsFood = new Boolean[4][10];
   }
 
   public String getName() {

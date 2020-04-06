@@ -1,15 +1,15 @@
 package src.datastructures;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Booking {
   private char seat;
   private int row;
   private Person person;
   private Flight flight;
-  private LocalDate bookingTime;
+  private LocalDateTime bookingTime;
 
-  public Booking(char seat, int row, Person person, Flight flight, LocalDate bookingTime) {
+  public Booking(char seat, int row, Person person, Flight flight, LocalDateTime bookingTime) {
     this.seat = seat;
     this.row = row;
     this.person = person;
@@ -41,7 +41,7 @@ public class Booking {
     return flight;
   }
 
-  public LocalDate getBookingTime() {
+  public LocalDateTime getBookingTime() {
     return bookingTime;
   }
 }
