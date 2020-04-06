@@ -13,7 +13,8 @@ public class FlightCLI {
 		final String date = scan.next();
 		final LocalDate ld = LocalDate.parse(date);
 		scan.close();
-		FlightDB.search();
+		// search date 2020-02-26
+		FlightDB.search(ld);
 	}
 
 	static void searchByAirportTo() {
