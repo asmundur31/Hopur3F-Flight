@@ -1,7 +1,8 @@
 package src;
 
-import java.util.Scanner;  // Import the Scanner class
+import java.util.Scanner; // Import the Scanner class
 
+import src.controllers.FlightMananger;
 import src.database.FlightDB;
 import src.datastructures.Flight;
 
@@ -9,20 +10,20 @@ import java.time.*;
 
 public class FlightCLI {
 	private static Flight[] flights;
+	private static Scanner scan;
 	
 	private static void search() throws ClassNotFoundException {
-		flights = FlightDB.search();
+		flights = FlightMananger.search();
 		pickFlight();
 	}
 	
 	private static void searchByDate() throws ClassNotFoundException {
 		System.out.println("Search by date 'yyyy-mm-dd'");
-		final Scanner scan = new Scanner(System.in);
-		final String date = scan.next();
+		final String date = scan.nextLine();
 		final LocalDate ld = LocalDate.parse(date);
-		scan.close();
-		// search date 2020-02-26
-		flights = FlightDB.search(ld);
+		// Leita af flugum eftir gefni dagsetningu
+		flights = FlightMananger.search(ld);
+		// Prentum út flugin
 		pickFlight();
 	}
 
@@ -39,16 +40,16 @@ public class FlightCLI {
 			System.out.println();
 			System.out.println(i++ + " " + f);
 		}
-		final Scanner scan = new Scanner(System.in);
-
-		Flight mainFlight = flights[Integer.valueOf(scan.next())-1];
-		scan.close();
+		int n = Integer.valueOf(scan.nextLine());
+		Flight mainFlight = flights[n-1];
+		System.out.println("Þú hefur valið flugið:");
+		System.out.println(mainFlight);
 		BookingCLI.bookFlight(mainFlight);
 		// go to BookingCLI so this class wont be to big
 	}
 	
 	public static void main(final String args[]) throws ClassNotFoundException {
-		final Scanner scan = new Scanner(System.in);
+		scan = new Scanner(System.in);
 		System.out.println("Search flight");
 		System.out.println("  Search: press 0");
 		System.out.println("  Search by date: press 1");
@@ -62,8 +63,8 @@ public class FlightCLI {
 		if (nr.equals("0")) search();
 		if (nr.equals("1")) searchByDate();
 		if (nr.equals("2")) searchByAirportTo();
-		scan.close();
 		//......
+		scan.close();
 	}
 
 	

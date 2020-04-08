@@ -20,23 +20,26 @@ public class FlightDB {
 			Statement statement = connection.createStatement();
 			statement.setQueryTimeout(30);
 			
-		//	ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM person");
-		//	flights = new Flight
+		  // ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM person");
+		  // flights = new Flight
 			
 			ArrayList<Flight> list = new ArrayList<Flight>();
 			
 			//LocalDateTime time;
 			ResultSet resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
-				//time = LocalDateTime.of(resultSet.getString("date"),resultSet.getString("time"));
-				list.add(new Flight(resultSet.getString("to"),
-								resultSet.getString("from"),
-								resultSet.getString("airplain"),
-								resultSet.getString("flight_number"),
-								LocalDateTime.parse(resultSet.getString("date")+"T"
-													+resultSet.getString("time"))
-								)
-						);
+				// time = LocalDateTime.of(resultSet.getString("date"),resultSet.getString("time"));
+				list.add(new Flight(
+					resultSet.getString("to"),
+					resultSet.getString("from"),
+					resultSet.getString("airplain"),
+					resultSet.getString("flight_number"),
+					LocalDateTime.parse(
+            resultSet.getString("date")+"T"+
+            resultSet.getString("time")
+            )
+          )
+        );
 				//System.out.println("to = " + resultSet.getString("to"));
 				//System.out.println("from = " + resultSet.getString("from"));
 				//System.out.println("airplain = " + resultSet.getString("airplain"));
@@ -44,21 +47,18 @@ public class FlightDB {
 				//System.out.println("date = " + resultSet.getString("date"));
 				//System.out.println("time = " + resultSet.getString("time"));
 			}
-		    flights = new Flight[list.size()];
+		  flights = new Flight[list.size()];
 			list.toArray(flights);
-		}
-		
-		catch(SQLException e) {System.err.println(e.getMessage()); }
-		 finally {
+    } catch(SQLException e) {
+      System.err.println(e.getMessage());
+    } finally {
 		 	try {
 		 		if(connection != null)
 		 			connection.close();
-		 	}
-		 	catch(SQLException e) {
+		 	} catch(SQLException e) {
 		 		System.err.println(e);
 		 	}
-		 }
-		
+		}
 	}
 
 	public static Flight[] search() throws ClassNotFoundException {

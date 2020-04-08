@@ -20,7 +20,7 @@ public class DBConnection {
 			
 			
 			// addar inn flugi í db - er þegar til því kemur villa
-			String sql = "INSERT INTO flight values('Ísafjarðarflugvöllur','Reykjavíkurflugvöllur',"
+			String sql = "INSERT INTO flight values('Ísafjarðarflugvöllur','Eigilsstaðaflugvöllur',"
 					+ "'TF-123','IR-2345','2020-03-09','9-15')";
 			statement.executeUpdate(sql);
 
