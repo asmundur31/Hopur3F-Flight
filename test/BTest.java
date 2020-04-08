@@ -18,9 +18,6 @@ public class BTest {
 	public void tearDown() {
 		p = null;
 	}
-	
-	@Test
-	public void test
 
 	@Test
 	public void testAirplane() {
