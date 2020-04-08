@@ -3,6 +3,7 @@ package test;
 import org.junit.*;
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import src.controllers.*;
 import src.datastructures.*;
@@ -33,13 +34,13 @@ public class FlightManangerTest {
 	    // Látum svo FlightMananger fá þessi flug
 	    flightMananger = new FlightMananger(flug);
 	}
-	
+
 	@After
 	public void tearDown() {
 		flightMananger = null;
 		flights = null;
 	}
-	  
+
 	@Test
  	public void testSearchDate1() {
 		// Leitum að flugi á eftirfarandi dagsetningu
@@ -91,6 +92,14 @@ public class FlightManangerTest {
 		assertEquals("Ísafjarðarflugvöllur",flights[1].getFrom().getName());
 		assertEquals("Reykjavíkurflugvöllur", flights[1].getTo().getName());
 		assertEquals("IR-1234",flights[1].getFlightNumber());
+	}
+	
+	@Test (expected=java.time.DateTimeException.class)
+	public void testSearchDate4() {
+		// Leitum að flugi með of nákvæmari tímasetningu
+		LocalDate dagsetning = LocalDate.of(2020,2,30);
+		flights = flightMananger.search(dagsetning);
+		assertNull(flights);
 	}
 	
 	// Óþarfi að hafa þetta en var búinn að þessu

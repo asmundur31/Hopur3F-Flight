@@ -9,12 +9,12 @@ import src.datastructures.Airport;
 import java.util.Date;
 
 public class FlightMananger {
-	
+
 	private Flight[] flights;
 
 	public FlightMananger() {
   	}
-	
+
   	public FlightMananger(Flight[] flights) {
   		this.flights = flights;
   	}
@@ -62,7 +62,7 @@ public class FlightMananger {
   	    }
   	    return flug;
   	}
-  	
+
   	public Flight[] search(Airport airport, Boolean to) {
   		int count = 0;
   		if(to) {
@@ -107,7 +107,7 @@ public class FlightMananger {
     
   		return flights;
   	}
-  
+
   	public Flight[] search(Date date, Airport from, Airport to) {
   		
   		return flights;
