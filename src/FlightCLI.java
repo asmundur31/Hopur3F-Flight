@@ -28,47 +28,55 @@ public class FlightCLI {
 	}
 
 	private static void searchByAirport(boolean to) throws ClassNotFoundException {
-		System.out.println("Sláðu inn flugvöll:");
+		if(to) {
+			System.out.println("Sláðu inn staðsetningu sem þig lagar að fljúga til:");
+		} else {
+			System.out.println("Sláðu inn staðsetningu sem þig lagar að fljúga frá:");
+		}
 		String flugvollur = scan.nextLine();
-		// Leita af flugum eftir því hvort til eða frá flugvelli
+		// Leita af flugum eftir því hvort til eða frá city
 		flights = FlightMananger.search(flugvollur, to);
 		// Prentum út flugin
 		pickFlight();
 	}
 	
 	private static void searchByDateAirport(boolean to) throws ClassNotFoundException {
-		System.out.println("Sláðu inn flugvöll:");
-		String flugvollur = scan.nextLine();
+		if(to) {
+			System.out.println("Sláðu inn staðsetningu sem þig lagar að fljúga til:");
+		} else {
+			System.out.println("Sláðu inn staðsetningu sem þig lagar að fljúga frá:");
+		}
+		String city = scan.nextLine();
 		System.out.println("Sláðu inn þá dagsetningu sem þig langar að fara (yyyy-mm-dd):");
 		String date = scan.nextLine();
 		LocalDate ld = LocalDate.parse(date);
-		// Leita af flugum eftir því hvort til eða frá flugvelli og á ákveðinni dagsetningu
-		flights = FlightMananger.search(ld, flugvollur, to);
+		// Leita af flugum eftir því hvort til eða frá city og á ákveðinni dagsetningu
+		flights = FlightMananger.search(ld, city, to);
 		// Prentum út flugin
 		pickFlight();
 	}
 	
 	private static void searchByDepartureDestination() throws ClassNotFoundException {
-		System.out.println("Sláðu inn flugvöll sem þig langar að fljúga frá:");
-		String flugvollurFra = scan.nextLine();
-		System.out.println("Sláðu inn flugvöll sem þig langar að fljúga til:");
-		String flugvollurTil = scan.nextLine();
-		// Leita af flugum frá flugvollurFra og til FlugvollurTil
-		flights = FlightMananger.search(flugvollurFra, flugvollurTil);
+		System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga frá:");
+		String cityFra = scan.nextLine();
+		System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga til:");
+		String cityTil = scan.nextLine();
+		// Leita af flugum frá cityFra og til cityTil
+		flights = FlightMananger.search(cityFra, cityTil);
 		// Prentum út flugin
 		pickFlight();
 	}
 	
-	private static void searchByDateDepartureDestination() {
-		System.out.println("Sláðu inn flugvöll sem þig langar að fljúga frá:");
-		String flugvollurFra = scan.nextLine();
-		System.out.println("Sláðu inn flugvöll sem þig langar að fljúga til:");
-		String flugvollurTil = scan.nextLine();
+	private static void searchByDateDepartureDestination() throws ClassNotFoundException {
+		System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga frá:");
+		String cityFra = scan.nextLine();
+		System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga til:");
+		String cityTil = scan.nextLine();
 		System.out.println("Sláðu inn þá dagsetningu sem þig langar að fara (yyyy-mm-dd):");
 		String date = scan.nextLine();
 		LocalDate ld = LocalDate.parse(date);
-		// Leita af flugum frá flugvollurFra og til FlugvollurTil á ákveðinni dagsetningu
-		flights = FlightMananger.search(ld, flugvollurFra, flugvollurTil);
+		// Leita af flugum frá cityFra og til cityTil á ákveðinni dagsetningu
+		flights = FlightMananger.search(ld, cityFra, cityTil);
 		// Prentum út flugin
 		pickFlight();
 	}
@@ -82,7 +90,8 @@ public class FlightCLI {
 		if(i==1) {
 			System.out.println("Því miður fundust enginn flug.");
 		} else {
-			System.out.println("Pick a Flight:");
+			System.out.println();
+			System.out.println("Veldu flug á bilinum 1 til "+(i-1)+":");
 			int n = Integer.valueOf(scan.nextLine());
 			Flight mainFlight = flights[n-1];
 			System.out.println("Þú hefur valið flugið:");

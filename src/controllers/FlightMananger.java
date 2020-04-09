@@ -11,23 +11,27 @@ public class FlightMananger {
 
 	private static Flight[] flights;
 
-	public static void ConnectToFlight(String sql) throws ClassNotFoundException {
+	public static void ConnectToFlight(String sql, String[] gildi) throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection("jdbc:sqlite:src/database/Flights.db");
-			Statement statement = connection.createStatement();
-			statement.setQueryTimeout(30);
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.clearParameters();
+			for(int i=1; i<=gildi.length; i++) {
+				ps.setString(i,gildi[i-1]);
+			}
+			ps.setQueryTimeout(30);
 			
 			ArrayList<Flight> list = new ArrayList<Flight>();
 			
-			//LocalDateTime time;
-			ResultSet resultSet = statement.executeQuery(sql);
+			ResultSet resultSet = ps.executeQuery();
 			
 			Statement underStm = connection.createStatement();
 			underStm.setQueryTimeout(30);
-			list.add(newFlight(statement, resultSet, underStm));
-
+			while(resultSet.next()) {
+				list.add(newFlight(ps, resultSet, underStm));
+			}
 			flights = new Flight[list.size()];
 			list.toArray(flights);
 		} catch(SQLException e) {
@@ -83,7 +87,7 @@ public class FlightMananger {
 	}
 	
 	public static Boolean[][] toBoolean(String arr, int size) {
-		System.out.println(arr.length());
+		//System.out.println(arr.length());
 		int col = size/10;
 		int row = size%10;
 		Boolean[][] bool = new Boolean[col][row];
@@ -100,29 +104,30 @@ public class FlightMananger {
 
 	public static Flight[] search() throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
-		ConnectToFlight("SELECT * FROM Flight");
+		ConnectToFlight("SELECT * FROM Flight",new String[0]);
 		return flights;
 	}
 	
 	public static Flight[] search(LocalDate date) throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
-		String a = date.toString();
-		ConnectToFlight("SELECT * FROM Flight WHERE date IS '"+a+"'");
-		System.out.println("out from connect");
+		String ps = "SELECT * FROM Flight WHERE date IS ?";
+		String[] gildi = new String[1];
+		gildi[0] = date.toString();
+		ConnectToFlight(ps, gildi);
 		return flights;
 	}
 	
-	public static Flight[] search(String airportName, Boolean to) throws ClassNotFoundException {
+	public static Flight[] search(String airportCity, Boolean to) throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
 		if(to) {
-			ConnectToFlight("SELECT * FROM Flight WHERE airport IS '"+airportName+"'");
+			ConnectToFlight("SELECT * FROM Flight WHERE ");
 		} else {
-			ConnectToFlight("SELECT * FROM Flight WHERE airport IS '"+airportName+"'");
+			ConnectToFlight("SELECT * FROM Flight WHERE from IS '"+airportName+"'");
 		}
 		return flights;
 	}
 	
-	public static Flight[] search(LocalDate date, String airport, Boolean to) {
+	public static Flight[] search(LocalDate date, String airportCity, Boolean to) throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
 		return flights;
 	}
