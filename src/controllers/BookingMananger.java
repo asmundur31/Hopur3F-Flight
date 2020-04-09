@@ -1,6 +1,8 @@
 package src.controllers;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 import src.datastructures.Booking;
@@ -14,7 +16,8 @@ public class BookingMananger {
   }
 
   public Booking create(char s, int r, Person p, Flight flight) {
-	  LocalDate	now = LocalDate.now();
+	  LocalDate localDate = LocalDate.now();
+	  LocalDateTime now = localDate.atTime(LocalTime.now());
 	  Booking booking = new Booking(s,r,p,flight,now);
 	  return booking;
   }
