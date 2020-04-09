@@ -3,10 +3,10 @@ package src;
 import java.util.Scanner; // Import the Scanner class
 
 import src.controllers.FlightMananger;
-import src.database.FlightDB;
 import src.datastructures.Flight;
 
 import java.time.*;
+
 
 public class FlightCLI {
 	private static Flight[] flights;

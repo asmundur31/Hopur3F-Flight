@@ -28,4 +28,8 @@ public class Airport {
   public double getLongtitude() {
     return longtitude;
   }
+  
+  public String toString() {
+	return name;
+  }
 }

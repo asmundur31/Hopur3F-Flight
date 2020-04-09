@@ -1,19 +1,11 @@
 package src.controllers;
 
-import src.database.FlightDB;
 
-import src.datastructures.Flight;
-import src.datastructures.Person;
-import src.datastructures.Airplain;
-import src.datastructures.Airport;
-import src.datastructures.Booking;
+import src.datastructures.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.*;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class FlightMananger {
@@ -22,6 +14,7 @@ public class FlightMananger {
 
 	public static void ConnectToFlight(String sql) throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
+		
 
 		Connection connection = null;
 		try {
@@ -37,30 +30,16 @@ public class FlightMananger {
 			//LocalDateTime time;
 			ResultSet resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
-				// time = LocalDateTime.of(resultSet.getString("date"),resultSet.getString("time"));
-				list.add(new Flight(
-					resultSet.getString("to"),
-					resultSet.getString("from"),
-					resultSet.getString("airplain"),
-					resultSet.getString("flight_number"),
-					LocalDateTime.parse(
-            resultSet.getString("date")+"T"+
-            resultSet.getString("time")
-            )
-          )
-        );
-				//System.out.println("to = " + resultSet.getString("to"));
-				//System.out.println("from = " + resultSet.getString("from"));
-				//System.out.println("airplain = " + resultSet.getString("airplain"));
-				//System.out.println("flight_number = " + resultSet.getString("flight_number"));
-				//System.out.println("date = " + resultSet.getString("date"));
-				//System.out.println("time = " + resultSet.getString("time"));
+				Statement underStm = connection.createStatement();
+				underStm.setQueryTimeout(30);
+				list.add(newFlight(statement, resultSet, underStm));
+		
 			}
-		  flights = new Flight[list.size()];
+		    flights = new Flight[list.size()];
 			list.toArray(flights);
-    } catch(SQLException e) {
-      System.err.println(e.getMessage());
-    } finally {
+		} catch(SQLException e) {
+			System.err.println(e.getMessage());
+		} finally {
 		 	try {
 		 		if(connection != null)
 		 			connection.close();
@@ -68,6 +47,62 @@ public class FlightMananger {
 		 		System.err.println(e);
 		 	}
 		}
+	}
+	
+	public static Flight newFlight(Statement statement, ResultSet resultSet, Statement underStm) 
+			throws SQLException {
+		// create destination airport
+		String table = "airport";
+		String name = resultSet.getString("to");
+		String query = "SELECT * FROM " + table + " WHERE name IS '" + name + "'";
+
+		ResultSet rs = underStm.executeQuery(query);		
+		Airport to = new Airport(rs.getString(1),
+								 rs.getString(2),
+								 rs.getFloat(3),
+								 rs.getFloat(4));
+		
+		// create departure airport
+		name = resultSet.getString("from");
+		query = "SELECT * FROM " + table + " WHERE name IS '" + name + "'";
+
+		rs = underStm.executeQuery(query);
+		Airport from = new Airport(rs.getString(1),
+				 				   rs.getString(2),
+				 				   rs.getFloat(3),
+				 				   rs.getFloat(4));
+		
+		// create airplain
+		table = "airplain";
+		name = resultSet.getString("airplain");
+		query = "SELECT * FROM " + table + " WHERE name IS '" + name + "'";
+
+		rs = underStm.executeQuery(query);
+		int size = rs.getInt(5);
+		Airplain airplain = new Airplain(rs.getString(1),
+										 toBoolean(rs.getString(2),size),
+										 toBoolean(rs.getString(3),size),
+										 toBoolean(rs.getString(4),size));
+		
+		return new Flight(to, from, airplain, resultSet.getString("flight_number"),
+						  LocalDateTime.parse(resultSet.getString("date")+"T"+
+								  		 	  resultSet.getString("time")));
+	}
+	
+	public static Boolean[][] toBoolean(String arr, int size) {
+		System.out.println(arr.length());
+		int col = size/10;
+		int row = size%10;
+		Boolean[][] bool = new Boolean[col][row];
+		int counter = col*row;
+		//System.out.println(counter + " "+arr.length());
+		for(int i = 0; i<col; i++) {
+			for(int j = 0; j < row; j++) {
+				if(arr.charAt(--counter) == '1') bool[i][j] = true;
+				else 						   	 bool[i][j] = false;
+			}
+		}
+		return bool;
 	}
 
 	public static Flight[] search() throws ClassNotFoundException {
