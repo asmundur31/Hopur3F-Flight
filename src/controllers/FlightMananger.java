@@ -16,6 +16,7 @@ public class FlightMananger {
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection("jdbc:sqlite:src/database/Flights.db");
+			
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.clearParameters();
 			for(int i=1; i<=gildi.length; i++) {
@@ -24,9 +25,9 @@ public class FlightMananger {
 			ps.setQueryTimeout(30);
 			
 			ArrayList<Flight> list = new ArrayList<Flight>();
-			
+
 			ResultSet resultSet = ps.executeQuery();
-			
+
 			Statement underStm = connection.createStatement();
 			underStm.setQueryTimeout(30);
 			while(resultSet.next()) {
@@ -50,7 +51,7 @@ public class FlightMananger {
 			throws SQLException {
 		// create destination airport
 		String table = "airport";
-		String name = resultSet.getString("to");
+		String name = resultSet.getString("airportTo");
 		String query = "SELECT * FROM " + table + " WHERE name IS '" + name + "'";
 
 		ResultSet rs = underStm.executeQuery(query);		
@@ -60,7 +61,7 @@ public class FlightMananger {
 								 rs.getFloat(4));
 		
 		// create departure airport
-		name = resultSet.getString("from");
+		name = resultSet.getString("airportFrom");
 		query = "SELECT * FROM " + table + " WHERE name IS '" + name + "'";
 
 		rs = underStm.executeQuery(query);
@@ -104,7 +105,7 @@ public class FlightMananger {
 
 	public static Flight[] search() throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
-		ConnectToFlight("SELECT * FROM Flight",new String[0]);
+		ConnectToFlight("SELECT * FROM Flight", new String[0]);
 		return flights;
 	}
 	
@@ -119,10 +120,16 @@ public class FlightMananger {
 	
 	public static Flight[] search(String airportCity, Boolean to) throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
+		String[] gildi = new String[1];
+		gildi[0] = airportCity;
 		if(to) {
-			ConnectToFlight("SELECT * FROM Flight WHERE ");
+			String ps = "SELECT * FROM Flight WHERE EXISTS(SELECT * FROM Airport WHERE "
+					+ "airportTo IS name AND city IS ?);";
+			ConnectToFlight(ps, gildi);
 		} else {
-			ConnectToFlight("SELECT * FROM Flight WHERE from IS '"+airportName+"'");
+			String ps = "SELECT * FROM Flight WHERE EXISTS(SELECT * FROM Airport WHERE "
+					+ "airportFrom IS name AND city IS ?);";
+			ConnectToFlight(ps, gildi);
 		}
 		return flights;
 	}

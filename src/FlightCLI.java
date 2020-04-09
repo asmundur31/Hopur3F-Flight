@@ -85,7 +85,7 @@ public class FlightCLI {
 		int i = 1;
 		for(Flight f : flights) {
 			System.out.println();
-			System.out.println(i++ + " " + f);
+			System.out.println(i++ + ": " + f);
 		}
 		if(i==1) {
 			System.out.println("Því miður fundust enginn flug.");
