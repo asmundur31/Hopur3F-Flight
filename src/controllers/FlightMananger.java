@@ -1,12 +1,6 @@
 package src.controllers;
 
-import src.database.FlightDB;
-
-import src.datastructures.Flight;
-import src.datastructures.Person;
-import src.datastructures.Airplain;
-import src.datastructures.Airport;
-import src.datastructures.Booking;
+import src.datastructures.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,45 +16,33 @@ public class FlightMananger {
 
 	public static void ConnectToFlight(String sql) throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
-
 		Connection connection = null;
 		try {
-			connection = DriverManager.getConnection("jdbc:sqlite:src/database/Flights.db");
+			connection = DriverManager.getConnection("jdbc:sqlite:src/database/Flight.db");
 			Statement statement = connection.createStatement();
 			statement.setQueryTimeout(30);
-			
-		  // ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM person");
-		  // flights = new Flight
 			
 			ArrayList<Flight> list = new ArrayList<Flight>();
 			
 			//LocalDateTime time;
 			ResultSet resultSet = statement.executeQuery(sql);
 			while(resultSet.next()) {
-				// time = LocalDateTime.of(resultSet.getString("date"),resultSet.getString("time"));
 				list.add(new Flight(
-					resultSet.getString("to"),
-					resultSet.getString("from"),
-					resultSet.getString("airplain"),
-					resultSet.getString("flight_number"),
+					resultSet.getString("airportToName"),
+					resultSet.getString("airportFromName"),
+					resultSet.getString("airplainName"),
+					resultSet.getString("flightNr"),
 					LocalDateTime.parse(
-            resultSet.getString("date")+"T"+
-            resultSet.getString("time")
-            )
-          )
-        );
-				//System.out.println("to = " + resultSet.getString("to"));
-				//System.out.println("from = " + resultSet.getString("from"));
-				//System.out.println("airplain = " + resultSet.getString("airplain"));
-				//System.out.println("flight_number = " + resultSet.getString("flight_number"));
-				//System.out.println("date = " + resultSet.getString("date"));
-				//System.out.println("time = " + resultSet.getString("time"));
+						resultSet.getString("date")+"T"+
+						resultSet.getString("time")
+					)
+				));
 			}
-		  flights = new Flight[list.size()];
+			flights = new Flight[list.size()];
 			list.toArray(flights);
-    } catch(SQLException e) {
-      System.err.println(e.getMessage());
-    } finally {
+		} catch(SQLException e) {
+			System.err.println(e.getMessage());
+		} finally {
 		 	try {
 		 		if(connection != null)
 		 			connection.close();
@@ -72,34 +54,39 @@ public class FlightMananger {
 
 	public static Flight[] search() throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
-		ConnectToFlight("SELECT * FROM Flight");
+		ConnectToFlight("SELECT * FROM Flights");
 		return flights;
 	}
 	
 	public static Flight[] search(LocalDate date) throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
 		String a = date.toString();
-		ConnectToFlight("SELECT * FROM Flight WHERE date IS '"+a+"'");
+		ConnectToFlight("SELECT * FROM Flights WHERE date IS '"+a+"'");
 		System.out.println("out from connect");
 		return flights;
 	}
 	
-	public static Flight[] search(Airport airport, Boolean to) {
+	public static Flight[] search(String airportName, Boolean to) throws ClassNotFoundException {
+		// Sækjum flug í gagnagrunnin
+		if(to) {
+			ConnectToFlight("SELECT * FROM Flights WHERE airportToName IS '"+airportName+"'");
+		} else {
+			ConnectToFlight("SELECT * FROM Flights WHERE airportFromName IS '"+airportName+"'");
+		}
+		return flights;
+	}
+	
+	public static Flight[] search(LocalDate date, String airport, Boolean to) {
 		// Sækjum flug í gagnagrunnin
 		return flights;
 	}
 	
-	public static Flight[] search(LocalDate date, Airport airport, Boolean to) {
+	public static Flight[] search(String airportFrom, String airportTo) {
 		// Sækjum flug í gagnagrunnin
 		return flights;
 	}
 	
-	public static Flight[] search(Airport from, Airport to) {
-		// Sækjum flug í gagnagrunnin
-		return flights;
-	}
-	
-	public Flight[] search(LocalDate date, Airport from, Airport to) {
+	public static Flight[] search(LocalDate date, String airportFrom, String airportTo) {
 		// Sækjum flug í gagnagrunnin
 		return flights;
 	}
