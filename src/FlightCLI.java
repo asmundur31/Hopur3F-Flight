@@ -3,10 +3,10 @@ package src;
 import java.util.Scanner; // Import the Scanner class
 
 import src.controllers.FlightMananger;
-import src.database.FlightDB;
 import src.datastructures.Flight;
 
 import java.time.*;
+
 
 public class FlightCLI {
 	private static Flight[] flights;
@@ -74,18 +74,22 @@ public class FlightCLI {
 	}
 	
 	private static void pickFlight() {
-		System.out.println("Pick a Flight");
 		int i = 1;
 		for(Flight f : flights) {
 			System.out.println();
 			System.out.println(i++ + " " + f);
 		}
-		int n = Integer.valueOf(scan.nextLine());
-		Flight mainFlight = flights[n-1];
-		System.out.println("Þú hefur valið flugið:");
-		System.out.println(mainFlight);
-		BookingCLI.bookFlight(mainFlight);
-		// go to BookingCLI so this class wont be to big
+		if(i==1) {
+			System.out.println("Því miður fundust enginn flug.");
+		} else {
+			System.out.println("Pick a Flight:");
+			int n = Integer.valueOf(scan.nextLine());
+			Flight mainFlight = flights[n-1];
+			System.out.println("Þú hefur valið flugið:");
+			System.out.println(mainFlight);
+			BookingCLI.bookFlight(mainFlight);
+			// go to BookingCLI so this class wont be to big
+		}
 	}
 	
 	public static void main(final String args[]) throws ClassNotFoundException {

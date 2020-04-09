@@ -7,16 +7,11 @@ public class Airplain {
   private Boolean[][] needsAssistance;
   private Boolean[][] wantsFood;
 
-  public Airplain(String name) {
+  public Airplain(String name, Boolean[][] seats, Boolean[][] assist, Boolean[][] food) {
     this.name = name;
-    this.availableSeats = new Boolean[10][4];
-    for(int i=0; i<10; i++) {
-      for(int j=0; j<4; j++) {
-        availableSeats[i][j] = true;
-      }
-    }
-    this.needsAssistance = new Boolean[10][4];
-    this.wantsFood = new Boolean[4][10];
+    this.availableSeats = seats;
+    this.needsAssistance = assist;
+    this.wantsFood = food;
   }
 
   public String getName() {
@@ -51,10 +46,5 @@ public class Airplain {
     int i = s-'a';
     int j = r;
     wantsFood[i][j] = false;
-  }
-
-  public static void main(String[] args) {
-    Airplain a = new Airplain("ThunderBolt");
-    a.setAvailableSeats('a',10);
   }
 }
