@@ -6,6 +6,7 @@ import src.controllers.FlightMananger;
 import src.datastructures.Flight;
 
 import java.time.*;
+import java.time.format.DateTimeParseException;
 
 
 public class FlightCLI {
@@ -18,9 +19,8 @@ public class FlightCLI {
 	}
 	
 	private static void searchByDate() throws ClassNotFoundException {
-		System.out.println("Search by date 'yyyy-mm-dd'");
-		final String date = scan.nextLine();
-		final LocalDate ld = LocalDate.parse(date);
+		System.out.println("Sláðu inn þá dagsetningu sem þig langar að fara (yyyy-mm-dd):");
+		LocalDate ld = getDate();
 		// Leita af flugum eftir gefni dagsetningu
 		flights = FlightMananger.search(ld);
 		// Prentum út flugin
@@ -48,8 +48,7 @@ public class FlightCLI {
 		}
 		String city = scan.nextLine();
 		System.out.println("Sláðu inn þá dagsetningu sem þig langar að fara (yyyy-mm-dd):");
-		String date = scan.nextLine();
-		LocalDate ld = LocalDate.parse(date);
+    LocalDate ld = getDate();
 		// Leita af flugum eftir því hvort til eða frá city og á ákveðinni dagsetningu
 		flights = FlightMananger.search(ld, city, to);
 		// Prentum út flugin
@@ -80,7 +79,21 @@ public class FlightCLI {
 		// Prentum út flugin
 		pickFlight();
 	}
-	
+  
+  private static LocalDate getDate() {
+    String date = scan.nextLine();
+    LocalDate ld = null;
+    while(ld == null) {
+      try {
+        ld = LocalDate.parse(date);
+      } catch(DateTimeParseException e) {
+        System.out.println("Þetta er ekki lögleg dagsetning, sláðu inn dagsetningu á forminu yyyy-mm-dd:");
+        date = scan.nextLine();
+      }
+    }
+    return ld;
+  }
+
 	private static void pickFlight() {
 		int i = 1;
 		for(Flight f : flights) {

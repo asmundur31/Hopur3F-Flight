@@ -135,17 +135,44 @@ public class FlightMananger {
 	}
 	
 	public static Flight[] search(LocalDate date, String airportCity, Boolean to) throws ClassNotFoundException {
-		// Sækjum flug í gagnagrunnin
+    // Sækjum flug í gagnagrunnin
+    String[] gildi = new String[2];
+    gildi[0] = date.toString();
+    gildi[1] = airportCity;
+		if(to) {
+			String ps = "SELECT * FROM Flight WHERE date IS ? AND EXISTS(SELECT * FROM Airport WHERE "
+					+ "airportTo IS name AND city IS ?);";
+			ConnectToFlight(ps, gildi);
+		} else {
+			String ps = "SELECT * FROM Flight WHERE date IS ? AND EXISTS(SELECT * FROM Airport WHERE "
+					+ "airportFrom IS name AND city IS ?);";
+			ConnectToFlight(ps, gildi);
+		}
 		return flights;
 	}
 	
-	public static Flight[] search(String airportFrom, String airportTo) {
-		// Sækjum flug í gagnagrunnin
+	public static Flight[] search(String airportFrom, String airportTo) throws ClassNotFoundException {
+    // Sækjum flug í gagnagrunnin
+    String[] gildi = new String[2];
+    gildi[0] = airportFrom;
+    gildi[1] = airportTo;
+    String ps = "SELECT * FROM Flight WHERE EXISTS(SELECT * FROM Airport WHERE "
+					+ "airportFrom IS name AND city IS ?) AND EXISTS(SELECT * FROM Airport WHERE "
+          + "airportTo IS name AND city IS ?);";
+    ConnectToFlight(ps, gildi);
 		return flights;
 	}
 	
-	public static Flight[] search(LocalDate date, String airportFrom, String airportTo) {
-		// Sækjum flug í gagnagrunnin
+	public static Flight[] search(LocalDate date, String airportFrom, String airportTo) throws ClassNotFoundException {
+    // Sækjum flug í gagnagrunnin
+    String[] gildi = new String[3];
+    gildi[0] = date.toString();
+    gildi[1] = airportFrom;
+    gildi[2] = airportTo;
+    String ps = "SELECT * FROM Flight WHERE date IS ? AND EXISTS(SELECT * FROM Airport WHERE "
+					+ "airportFrom IS name AND city IS ?) AND EXISTS(SELECT * FROM Airport WHERE "
+          + "airportTo IS name AND city IS ?);";
+    ConnectToFlight(ps, gildi);
 		return flights;
 	}
 	
