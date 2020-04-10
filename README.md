@@ -13,11 +13,11 @@ Síðan til að byrja þá er eftirfarandi skipun keyrð:
 Fyrir Windows:
 
 ```
-java -cp .;src/database/sqlite-jdbc-3.18.0.jar
+java -cp .;src/database/sqlite-jdbc-3.18.0.jar src/FlightCLI
 ```
 
 Fyrir Unix:
 
 ```
-java -cp .:src/database/sqlite-jdbc-3.18.0.jar
+java -cp .:src/database/sqlite-jdbc-3.18.0.jar src/FlightCLI
 ```
