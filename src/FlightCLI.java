@@ -79,6 +79,7 @@ public class FlightCLI {
 		pickFlight();
 	}
   
+  // Aðferð sem biður notendan um dagsetningu á réttu formi
   private static LocalDate getDate() {
     String date = scan.nextLine();
     LocalDate ld = null;

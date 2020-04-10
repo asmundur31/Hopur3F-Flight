@@ -23,7 +23,7 @@ public class Airplain {
   }
 
   public void setAvailableSeats(char s, int r) {
-    int i = s-'a';
+    int i = s-'A';
     int j = r;
     availableSeats[i][j] = false;
   }
@@ -33,7 +33,7 @@ public class Airplain {
   }
 
   public void setNeedsAssistance(char s, int r) {
-    int i = s-'a';
+    int i = s-'A';
     int j = r;
     needsAssistance[i][j] = false;
   }
@@ -43,8 +43,27 @@ public class Airplain {
   }
 
   public void setWantsFood(char s, int r) {
-    int i = s-'a';
+    int i = s-'A';
     int j = r;
     wantsFood[i][j] = false;
+  }
+
+  public void printAvailableSeats() {
+    for(int i=0; i<availableSeats.length; i++) {
+      char s = (char) ('A' + i);
+      for(int j=0; j<availableSeats[0].length; j++) {
+        if(availableSeats[i][j]) {
+          System.out.print((j+1)+""+s+" ");
+        } else {
+          System.out.print("   ");
+        }
+      }
+      if(i==(availableSeats.length-1)/2) {
+        System.out.println();
+        System.out.println();
+      } else {
+        System.out.println();
+      }
+    }
   }
 }

@@ -1,8 +1,11 @@
 package src;
 
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
+import src.controllers.BookingMananger;
 import src.controllers.PersonMananger;
+import src.datastructures.Booking;
 import src.datastructures.Flight;
 import src.datastructures.Person;
 
@@ -36,7 +39,8 @@ public class BookingCLI {
           email = scan.nextLine();
           System.out.println("Símanúmer (xxx-xxxx):");
           phone = scan.nextLine();
-          p = PersonMananger.createPerson(name, ssn, email, phone);
+          p = new Person(name, ssn, email, phone);
+          PersonMananger.createPerson(p);
         } else { // Notandi hefur bókað áður
           System.out.println("Kennitala: ");
           ssn = scan.nextLine();
@@ -46,6 +50,7 @@ public class BookingCLI {
             System.out.println("Reyna aftur? (J/N)");
             Boolean aftur = getAns();
             if(aftur) { // Notandi vildi reyna aftur
+              System.out.println("Kennitala: ");
               ssn = scan.nextLine();
               p = PersonMananger.getPerson(ssn);
             } else { // Notandi vildi ekki reyna aftur og við hættum
@@ -58,43 +63,31 @@ public class BookingCLI {
       // Person p ætlar að bóka
       // p er ný búinn að skrá sig eða var skráður áður
       // Byrjum að birta laus sæti
-      Boolean[][] laust = mainFlight.getAirplain().getAvailableSeats();
       System.out.println("Laus sæti: ");
-      for(int i=0; i<laust.length; i++) {
-        char s = (char) ('A' + i);
-        for(int j=0; j<laust[0].length; j++) {
-          if(laust[i][j]) {
-            System.out.print((j+1)+""+s+" ");
-          } else {
-            System.out.print("   ");
-          }
-        }
-        if(i==(laust.length-1)/2) {
-          System.out.println();
-          System.out.println();
-        } else {
-          System.out.println();
-        }
-      }
+      mainFlight.getAirplain().printAvailableSeats();
       // Leifum notanda að velja sæti
       System.out.println("Veldu sæti með tölu og stórum staf (t.d. 5C eða 28F):");
-      String validSaeti = getSeat(laust);
-      System.out.println(validSaeti);
-      // Uppfærum töfluna Airplain í DB með því að setja þetta
-      // sæti sem ekki laust hjá réttri flugvél ---VANTAR
-
-      // ...
-    } else { // Notandi vildi ekki bóka
-      System.out.println("Takk fyrir að nota leitarvél Hóps 3F");
-      System.out.println("Endilega láttu okkur vita hvað þér fannst");
-      System.out.println("Öll komment eru vel þegin:");
-      String comment = scan.nextLine();
-      System.out.println("Komment:");
-      System.out.println(comment);
+      String validSaeti = getSeat(mainFlight.getAirplain().getAvailableSeats());
+      // Uppfærum flugvélina með því að setja þetta
+      // sæti sem ekki laust hjá réttri flugvél
+      char s = validSaeti.charAt(validSaeti.length()-1);
+      int r = Integer.parseInt(validSaeti.substring(0, validSaeti.length()-1));
+      mainFlight.getAirplain().setAvailableSeats(s, r);
+      // Búum nú til bókun fyrir þessa person
+      Booking nyBokun = new Booking(s, r, p, mainFlight, LocalDateTime.now());
+      p.addBooking(nyBokun);
+      BookingMananger.createBooking(nyBokun, p);
+      // Prentum út bókunina
+      System.out.println("Hér er bókunin þín, takk fyrir viðskiptin!");
+      System.out.println(nyBokun);
     }
-		// get person information
-		// do booking
-		
+    System.out.println("Takk fyrir að nota leitarvél Hóps 3F");
+    System.out.println("Endilega láttu okkur vita hvað þér fannst");
+    System.out.println("Öll komment eru vel þegin:");
+    String comment = scan.nextLine();
+    System.out.println("Komment:");
+    System.out.println(comment);
+    // Ef við viljum geyma einhver feedback þá gætum við það
   }
   
   // Aðferð sem athugar hvort notandi svarar játandi eða ekki

@@ -43,19 +43,17 @@ public class PersonMananger {
   }
 
   // Aðferð sem bætir persónu inn í gagnagrunninn
-  public static Person createPerson(String name, String ssn, String email, String phoneNumber) throws ClassNotFoundException {
+  public static void createPerson(Person p) throws ClassNotFoundException {
     // Athugum fyrst hvort þessi person er til
-    person = null;
     String sql = "SELECT * FROM Person WHERE ssn IS ?";
-    String[] gildi = {ssn};
+    String[] gildi = {p.getSsn()};
     ConnectToPerson(sql, gildi, false);
     // Ef enginn persóna þá bætum við henni inn
     if(person == null) {
       sql = "INSERT INTO Person(name, ssn, bookings, email, phone_number) values(?,?,?,?,?);";
-      String[] nyGildi = {name, ssn, "", email, phoneNumber};
+      String[] nyGildi = {p.getName(), p.getSsn(), "", p.getEmail(), p.getPhoneNumber()};
       ConnectToPerson(sql, nyGildi, true);
     }
-    return person;
   }
 
   // Aðferð sem skilar persónu með kennitölu ssn
@@ -67,10 +65,10 @@ public class PersonMananger {
     return person;
   }
   
-  // Aðferð sem eyðir persónu með kennitölu ssn úr gagnagrunninum
-  public static void deletePerson(String ssn) throws ClassNotFoundException {
+  // Aðferð sem eyðir persónu p úr gagnagrunninum
+  public static void deletePerson(Person p) throws ClassNotFoundException {
     String sql = "DELETE FROM Person WHERE ssn IS ?;";
-    String[] gildi = {ssn};
+    String[] gildi = {p.getSsn()};
     ConnectToPerson(sql, gildi, true);
   }
 }
