@@ -72,8 +72,7 @@ public class FlightCLI {
 		System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga til:");
 		String cityTil = scan.nextLine();
 		System.out.println("Sláðu inn þá dagsetningu sem þig langar að fara (yyyy-mm-dd):");
-		String date = scan.nextLine();
-		LocalDate ld = LocalDate.parse(date);
+		LocalDate ld = getDate();
 		// Leita af flugum frá cityFra og til cityTil á ákveðinni dagsetningu
 		flights = FlightMananger.search(ld, cityFra, cityTil);
 		// Prentum út flugin
@@ -94,6 +93,25 @@ public class FlightCLI {
     return ld;
   }
 
+  // Aðferð sem biður notendan að gefa rétt gildi á n
+  // þegar hann velur flug
+  private static int getNumber(int max) {
+    String num = scan.nextLine();
+    int n = 0;
+    while(n<1 || max<n) {
+      try {
+        n = Integer.parseInt(num);
+        if(n<1 || max<n) {
+          throw new NumberFormatException();
+        } 
+      } catch(NumberFormatException e) {
+        System.out.println("Ekkert flug er númer "+num+", vinsamlegast reyndu aftur:");
+        num = scan.nextLine();
+      }
+    }
+    return n;
+  }
+
 	private static void pickFlight() {
 		int i = 1;
 		for(Flight f : flights) {
@@ -105,7 +123,7 @@ public class FlightCLI {
 		} else {
 			System.out.println();
 			System.out.println("Veldu flug á bilinum 1 til "+(i-1)+":");
-			int n = Integer.valueOf(scan.nextLine());
+      int n = getNumber(i-1);
 			Flight mainFlight = flights[n-1];
 			System.out.println("Þú hefur valið flugið:");
 			System.out.println(mainFlight);
