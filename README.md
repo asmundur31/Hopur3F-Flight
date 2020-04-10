@@ -1,7 +1,7 @@
 # Hopur3F-Flight
 
 ## Uppsetning
-Til að keyra verkefnið þá þarf að ná í þetta repository og setja á tölvuna sína. Síðan fara inn í möppuna *Hopur3F-Flight* og þýða skrárnar með eftirfarandi skipun:
+Til að keyra verkefnið þá þarf að ná í þetta repository og setja á tölvuna sína. Síðan fara inn í möppuna **Hopur3F-Flight** og þýða skrárnar með eftirfarandi skipun:
 
 ```
 javac src/*.java
