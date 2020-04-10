@@ -112,7 +112,7 @@ public class FlightCLI {
     return n;
   }
 
-	private static void pickFlight() {
+	private static void pickFlight() throws ClassNotFoundException {
 		int i = 1;
 		for(Flight f : flights) {
 			System.out.println();
@@ -127,7 +127,7 @@ public class FlightCLI {
 			Flight mainFlight = flights[n-1];
 			System.out.println("Þú hefur valið flugið:");
 			System.out.println(mainFlight);
-			BookingCLI.bookFlight(mainFlight);
+			BookingCLI.bookFlight(mainFlight, scan);
 			// go to BookingCLI so this class wont be to big
 		}
 	}
@@ -156,4 +156,3 @@ public class FlightCLI {
 		scan.close();
 	}
 }
-

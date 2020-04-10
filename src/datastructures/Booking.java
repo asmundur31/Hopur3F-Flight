@@ -44,4 +44,25 @@ public class Booking {
   public LocalDateTime getBookingTime() {
     return bookingTime;
   }
+
+  public String toString() {
+    String bokun = "Þín bókun:";
+    bokun += "=====================================";
+    bokun += "\nNafn: "+person.getName();
+    bokun += "\nKennitala: "+person.getSsn();
+    bokun += "\nNetfang: "+person.getEmail();
+    bokun += "\n";
+    bokun += "\nFlugið:";
+    bokun += "\nFlugnúmer: "+flight.getFlightNumber();
+    bokun += "\nFrá: "+flight.getFrom();
+    bokun += "\nTil: "+flight.getTo();
+    bokun += "\nDagsetning: "+flight.getDate().toString();
+    bokun += "\n";
+    bokun += "\nSæti: "+seat;
+    bokun += "\nRöð: "+row;
+    bokun += "\n";
+    bokun += "\nTími bókunnar: "+bookingTime.toString();
+    bokun += "=====================================";
+    return bokun;
+  }
 }

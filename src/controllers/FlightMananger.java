@@ -112,16 +112,14 @@ public class FlightMananger {
 	public static Flight[] search(LocalDate date) throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
 		String ps = "SELECT * FROM Flight WHERE date IS ?";
-		String[] gildi = new String[1];
-		gildi[0] = date.toString();
+		String[] gildi = {date.toString()};
 		ConnectToFlight(ps, gildi);
 		return flights;
 	}
 	
 	public static Flight[] search(String airportCity, Boolean to) throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
-		String[] gildi = new String[1];
-		gildi[0] = airportCity;
+		String[] gildi = {airportCity};
 		if(to) {
 			String ps = "SELECT * FROM Flight WHERE EXISTS(SELECT * FROM Airport WHERE "
 					+ "airportTo IS name AND city IS ?);";
@@ -136,9 +134,7 @@ public class FlightMananger {
 	
 	public static Flight[] search(LocalDate date, String airportCity, Boolean to) throws ClassNotFoundException {
     // Sækjum flug í gagnagrunnin
-    String[] gildi = new String[2];
-    gildi[0] = date.toString();
-    gildi[1] = airportCity;
+    String[] gildi = {date.toString(), airportCity};
 		if(to) {
 			String ps = "SELECT * FROM Flight WHERE date IS ? AND EXISTS(SELECT * FROM Airport WHERE "
 					+ "airportTo IS name AND city IS ?);";
@@ -153,9 +149,7 @@ public class FlightMananger {
 	
 	public static Flight[] search(String airportFrom, String airportTo) throws ClassNotFoundException {
     // Sækjum flug í gagnagrunnin
-    String[] gildi = new String[2];
-    gildi[0] = airportFrom;
-    gildi[1] = airportTo;
+    String[] gildi = {airportFrom, airportTo};
     String ps = "SELECT * FROM Flight WHERE EXISTS(SELECT * FROM Airport WHERE "
 					+ "airportFrom IS name AND city IS ?) AND EXISTS(SELECT * FROM Airport WHERE "
           + "airportTo IS name AND city IS ?);";
@@ -165,10 +159,7 @@ public class FlightMananger {
 	
 	public static Flight[] search(LocalDate date, String airportFrom, String airportTo) throws ClassNotFoundException {
     // Sækjum flug í gagnagrunnin
-    String[] gildi = new String[3];
-    gildi[0] = date.toString();
-    gildi[1] = airportFrom;
-    gildi[2] = airportTo;
+    String[] gildi = {date.toString(), airportFrom, airportTo};
     String ps = "SELECT * FROM Flight WHERE date IS ? AND EXISTS(SELECT * FROM Airport WHERE "
 					+ "airportFrom IS name AND city IS ?) AND EXISTS(SELECT * FROM Airport WHERE "
           + "airportTo IS name AND city IS ?);";
