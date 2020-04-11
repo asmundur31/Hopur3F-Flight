@@ -24,7 +24,7 @@ public class BookingMananger {
         ps.executeUpdate();
       } else if(type.equals("getSeats")) {
         ResultSet resultSet = ps.executeQuery();
-        availableSeats = resultSet.getString("avalable_seats");
+        availableSeats = resultSet.getString("availableSeats");
       } else if(type.equals("getBookings")) {
         ResultSet resultSet = ps.executeQuery();
         while(resultSet.next()) {
@@ -43,24 +43,26 @@ public class BookingMananger {
     }
   }
 
-  public static void createBooking(Booking b, Person p) throws ClassNotFoundException {
+  public static void createBooking(Booking b) throws ClassNotFoundException {
     // Uppfærum available_seat breytunna í töflunni Airplain
-    String sql = "SELECT avalable_seats FROM Airplain;";
-    ConnectToBooking(sql, new String[0], "getSeats");
+    String sql = "SELECT availableSeats FROM Airplain WHERE "+
+                 "flightDate IS ? AND flightNumber IS ?;";
+    String[] gild = {b.getFlight().getDate().toString(), b.getFlight().getFlightNumber()};
+    ConnectToBooking(sql, gild, "getSeats");
     // Uppfæra availableSeats breytuna
     int row = b.getFlight().getAirplain().getAvailableSeats()[0].length;
     int r = b.getRow()-1;
     int s = b.getSeat() - 'A';
     availableSeats = availableSeats.substring(0, r*row+s) + '0' +
                      availableSeats.substring(r*row+s+1);
-    sql = "UPDATE Airplain SET avalable_seats=? WHERE " +
-          "name IS ?;";
-    String[] gildi = {availableSeats, b.getFlight().getAirplain().getName()};
+    sql = "UPDATE Airplain SET availableSeats=? WHERE " +
+          "flightDate IS ? AND flightNumber IS ?;";
+    String[] gildi = {availableSeats, b.getFlight().getDate().toString(), b.getFlight().getFlightNumber()};
     ConnectToBooking(sql, gildi, "update");
     // Bæta við bókun í Booking töfluna.
     sql = "INSERT INTO Booking(row, seat, person, flight, " +
           "booking_time) values(?,?,?,?,?);";
-    String[] nyGildi = {b.getRow()+"", b.getSeat()+"", p.getSsn(),
+    String[] nyGildi = {b.getRow()+"", b.getSeat()+"", b.getPerson().getSsn(),
         b.getFlight().getFlightNumber()+"|"+b.getFlight().getDate(), b.getBookingTime().toString()};
     ConnectToBooking(sql, nyGildi, "update");
     // Uppfæra bookings í person töflunni fyrir person p.

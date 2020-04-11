@@ -31,7 +31,7 @@ public class FlightMananger {
 			Statement underStm = connection.createStatement();
 			underStm.setQueryTimeout(30);
 			while(resultSet.next()) {
-				list.add(newFlight(ps, resultSet, underStm));
+				list.add(newFlight(resultSet, underStm));
 			}
 			flights = new Flight[list.size()];
 			list.toArray(flights);
@@ -47,7 +47,7 @@ public class FlightMananger {
 		}
 	}
 	
-	public static Flight newFlight(Statement statement, ResultSet resultSet, Statement underStm) 
+	public static Flight newFlight(ResultSet resultSet, Statement underStm) 
 			throws SQLException {
 		// create destination airport
 		String table = "airport";
@@ -71,16 +71,21 @@ public class FlightMananger {
 				 				   rs.getFloat(4));
 		
 		// create airplain
-		table = "airplain";
-		name = resultSet.getString("airplain");
-		query = "SELECT * FROM " + table + " WHERE name IS '" + name + "'";
+		table = "Airplain";
+    name = resultSet.getString("airplain");
+    String fDate = resultSet.getString("date")+"T"+
+                   resultSet.getString("time");
+    String fNumber = resultSet.getString("flight_number");
+    query = "SELECT * FROM "+table+" WHERE name IS '"+name+
+            "' AND flightDate IS '"+fDate+"' AND flightNumber IS '"+
+            fNumber+"';";
 
 		rs = underStm.executeQuery(query);
-		int size = rs.getInt(5);
-		Airplain airplain = new Airplain(rs.getString(1),
-										 toBoolean(rs.getString(2),size),
-										 toBoolean(rs.getString(3),size),
-										 toBoolean(rs.getString(4),size));
+    int size = rs.getInt(5);
+		Airplain airplain = new Airplain(rs.getString("name"),
+										 toBoolean(rs.getString("availableSeats"),size),
+										 toBoolean(rs.getString("needsAssistance"),size),
+										 toBoolean(rs.getString("wantsFood"),size));
 		
 		return new Flight(to, from, airplain, resultSet.getString("flight_number"),
 						  LocalDateTime.parse(resultSet.getString("date")+"T"+
@@ -105,13 +110,13 @@ public class FlightMananger {
 
 	public static Flight[] search() throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
-		ConnectToFlight("SELECT * FROM Flight", new String[0]);
+		ConnectToFlight("SELECT * FROM Flight;", new String[0]);
 		return flights;
 	}
 	
 	public static Flight[] search(LocalDate date) throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
-		String ps = "SELECT * FROM Flight WHERE date IS ?";
+		String ps = "SELECT * FROM Flight WHERE date IS ?;";
 		String[] gildi = {date.toString()};
 		ConnectToFlight(ps, gildi);
 		return flights;

@@ -41,9 +41,8 @@ public class Flight {
   }
   
   public String toString() {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMM d, yyyy hh:mm");
-
-	  String text = date.format(formatter);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMM d, yyyy HH:mm");
+    String text = date.format(formatter);
 	  return getFrom() +" To "+getTo() + ",    " + text;
   }
 }

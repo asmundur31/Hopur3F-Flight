@@ -37,7 +37,7 @@ public class BookingCLI {
           ssn = scan.nextLine();
           System.out.println("Netfang:");
           email = scan.nextLine();
-          System.out.println("Símanúmer (xxx-xxxx):");
+          System.out.println("Símanúmer:");
           phone = scan.nextLine();
           p = new Person(name, ssn, email, phone);
           PersonMananger.createPerson(p);
@@ -76,7 +76,7 @@ public class BookingCLI {
       // Búum nú til bókun fyrir þessa person
       Booking nyBokun = new Booking(s, r, p, mainFlight, LocalDateTime.now());
       p.addBooking(nyBokun);
-      BookingMananger.createBooking(nyBokun, p);
+      BookingMananger.createBooking(nyBokun);
       // Prentum út bókunina
       System.out.println("Hér er bókunin þín, takk fyrir viðskiptin!");
       System.out.println(nyBokun);

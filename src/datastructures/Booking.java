@@ -1,6 +1,7 @@
 package src.datastructures;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Booking {
   private char seat;
@@ -66,12 +67,15 @@ public class Booking {
     bokun += "\nFlugnúmer:  "+flight.getFlightNumber();
     bokun += "\nFrá:        "+flight.getFrom();
     bokun += "\nTil:        "+flight.getTo();
-    bokun += "\nDagsetning: "+flight.getDate().toString();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
+    String dagsetning = flight.getDate().format(formatter);
+    bokun += "\nDagsetning: "+dagsetning;
     bokun += "\n";
     bokun += "\nRöð:  "+row;
     bokun += "\nSæti: "+seat;
     bokun += "\n";
-    bokun += "\nTími bókunnar: "+bookingTime.toString();
+    String timiBokun = bookingTime.format(formatter);
+    bokun += "\nTími bókunnar: "+timiBokun;
     bokun += "\n=====================================";
     return bokun;
   }
