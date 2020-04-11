@@ -29,9 +29,9 @@ public class FlightCLI {
 
 	private static void searchByAirport(boolean to) throws ClassNotFoundException {
 		if(to) {
-			System.out.println("Sláðu inn staðsetningu sem þig lagar að fljúga til:");
+			System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga til:");
 		} else {
-			System.out.println("Sláðu inn staðsetningu sem þig lagar að fljúga frá:");
+			System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga frá:");
 		}
 		String flugvollur = scan.nextLine();
 		// Leita af flugum eftir því hvort til eða frá city
@@ -42,9 +42,9 @@ public class FlightCLI {
 	
 	private static void searchByDateAirport(boolean to) throws ClassNotFoundException {
 		if(to) {
-			System.out.println("Sláðu inn staðsetningu sem þig lagar að fljúga til:");
+			System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga til:");
 		} else {
-			System.out.println("Sláðu inn staðsetningu sem þig lagar að fljúga frá:");
+			System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga frá:");
 		}
 		String city = scan.nextLine();
 		System.out.println("Sláðu inn þá dagsetningu sem þig langar að fara (yyyy-mm-dd):");
