@@ -23,8 +23,8 @@ public class Airplain {
   }
 
   public void setAvailableSeats(char s, int r) {
-    int i = s-'A';
-    int j = r;
+    int i = r - 1;
+    int j = s - 'A';
     availableSeats[i][j] = false;
   }
 
@@ -33,8 +33,8 @@ public class Airplain {
   }
 
   public void setNeedsAssistance(char s, int r) {
-    int i = s-'A';
-    int j = r;
+    int i = r - 1;
+    int j = s - 'A';
     needsAssistance[i][j] = false;
   }
 
@@ -43,27 +43,30 @@ public class Airplain {
   }
 
   public void setWantsFood(char s, int r) {
-    int i = s-'A';
-    int j = r;
+    int i = r - 1;
+    int j = s - 'A';
     wantsFood[i][j] = false;
   }
 
+  // Aðferð sem prentar út laus sæti
   public void printAvailableSeats() {
     for(int i=0; i<availableSeats.length; i++) {
-      char s = (char) ('A' + i);
       for(int j=0; j<availableSeats[0].length; j++) {
+        char s = (char) ('A' + availableSeats[0].length - j - 1);
+        int r = availableSeats.length-i;
         if(availableSeats[i][j]) {
-          System.out.print((j+1)+""+s+" ");
+          for(int bil=0; bil<(int)(Math.log10(availableSeats.length)-(int)(Math.log10(r))); bil++) {
+            System.out.print(" ");
+          }
+          System.out.print("" + r + s + " ");
         } else {
-          System.out.print("   ");
+          System.out.print("    ");
+        }
+        if(j==(availableSeats[0].length-1)/2) {
+          System.out.print("  ");
         }
       }
-      if(i==(availableSeats.length-1)/2) {
-        System.out.println();
-        System.out.println();
-      } else {
-        System.out.println();
-      }
+      System.out.println();
     }
   }
 }

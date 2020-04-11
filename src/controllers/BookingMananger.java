@@ -1,9 +1,6 @@
 package src.controllers;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import src.datastructures.*;
 
@@ -27,7 +24,7 @@ public class BookingMananger {
         ps.executeUpdate();
       } else if(type.equals("getSeats")) {
         ResultSet resultSet = ps.executeQuery();
-        availableSeats = resultSet.getString("available_seats");
+        availableSeats = resultSet.getString("avalable_seats");
       } else if(type.equals("getBookings")) {
         ResultSet resultSet = ps.executeQuery();
         while(resultSet.next()) {
@@ -48,18 +45,23 @@ public class BookingMananger {
 
   public static void createBooking(Booking b, Person p) throws ClassNotFoundException {
     // Uppfærum available_seat breytunna í töflunni Airplain
-    String sql = "SELECT available_seats FROM Airplain;";
+    String sql = "SELECT avalable_seats FROM Airplain;";
     ConnectToBooking(sql, new String[0], "getSeats");
     // Uppfæra availableSeats breytuna
-    // availableSeats = ...   ATHUGA AÐ ÞESSI LÍNA Á EKKI AÐ VERA KOMMENT
-    sql = "INSERT INTO Airplain(available_seats) values(?);";
-    String[] gildi = {availableSeats};
+    int row = b.getFlight().getAirplain().getAvailableSeats()[0].length;
+    int r = b.getRow()-1;
+    int s = b.getSeat() - 'A';
+    availableSeats = availableSeats.substring(0, r*row+s) + '0' +
+                     availableSeats.substring(r*row+s+1);
+    sql = "UPDATE Airplain SET avalable_seats=? WHERE " +
+          "name IS ?;";
+    String[] gildi = {availableSeats, b.getFlight().getAirplain().getName()};
     ConnectToBooking(sql, gildi, "update");
     // Bæta við bókun í Booking töfluna.
     sql = "INSERT INTO Booking(row, seat, person, flight, " +
           "booking_time) values(?,?,?,?,?);";
     String[] nyGildi = {b.getRow()+"", b.getSeat()+"", p.getSsn(),
-        b.getFlight().getFlightNumber(), b.getBookingTime().toString()};
+        b.getFlight().getFlightNumber()+"|"+b.getFlight().getDate(), b.getBookingTime().toString()};
     ConnectToBooking(sql, nyGildi, "update");
     // Uppfæra bookings í person töflunni fyrir person p.
     // Ég held að það sé óþarfi að hafa dálkinn bookings í person
@@ -72,7 +74,7 @@ public class BookingMananger {
   }
 
   public static Booking[] getBookings(Person p) {
-    // Ef við viljum bjóða uppá að prenta út allar bókanir
+    // Ef við viljum bjóða uppá að sækja allar bókanir
     // fyrir einhverja manneskju p
     return bookings;
   }

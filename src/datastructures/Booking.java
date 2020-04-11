@@ -9,6 +9,16 @@ public class Booking {
   private Flight flight;
   private LocalDateTime bookingTime;
 
+  /* Fastayrðing gagna:
+        - seat inniheldur sætið sem er bókað og er bókstafur á bilinu
+          A,...,breidd flugvélar.
+        - row inniheldur röðina sem er bókuð og er tala á bilinu
+          1,...,lengd flugvélar.
+        - person er manneskjan sem framkvæmdi bókunina.
+        - flight er flugið sem er bókað.
+        - bookingTime er tíminn sem bókunin var gerð.
+  */
+
   public Booking(char seat, int row, Person person, Flight flight, LocalDateTime bookingTime) {
     this.seat = seat;
     this.row = row;
@@ -58,8 +68,8 @@ public class Booking {
     bokun += "\nTil:        "+flight.getTo();
     bokun += "\nDagsetning: "+flight.getDate().toString();
     bokun += "\n";
-    bokun += "\nSæti: "+seat;
     bokun += "\nRöð:  "+row;
+    bokun += "\nSæti: "+seat;
     bokun += "\n";
     bokun += "\nTími bókunnar: "+bookingTime.toString();
     bokun += "\n=====================================";

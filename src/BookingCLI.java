@@ -113,18 +113,17 @@ public class BookingCLI {
     int s = -1;
     int r = -1;
     try {
-      s = saeti.charAt(saeti.length()-1)-'A';
-      r = Integer.parseInt(saeti.substring(0, saeti.length()-1))-1;
+      r = available.length-Integer.parseInt(saeti.substring(0, saeti.length()-1));
+      s = available[0].length-(saeti.charAt(saeti.length()-1)-'A'+1);
     } catch(NumberFormatException e) {
       System.out.println("Ekki löglegt sæti, athugaðu hvort þú er með tölu og stóran staf.");
     }
-    System.out.println(s+" "+r+" "+available[s][r]);
-    while(s<0 || s>=available.length || r<0 || r>=available[0].length || !available[s][r]){
+    while(r<0 || r>=available.length || s<0 || s>=available[0].length || !available[r][s]){
       System.out.println("Sæti ekki laust, veldu annað sæti:");
       saeti = scan.nextLine();
       try {
-        s = saeti.charAt(saeti.length()-1)-'A';
-        r = Integer.parseInt(saeti.substring(0, saeti.length()-1))-1;
+        r = available.length-Integer.parseInt(saeti.substring(0, saeti.length()-1));
+        s = available[0].length-(saeti.charAt(saeti.length()-1)-'A'+1);
       } catch(NumberFormatException e) {
         System.out.println("Ekki löglegt sæti, athugaðu hvort þú er með tölu og stóran staf.");
       }
