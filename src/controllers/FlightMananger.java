@@ -166,20 +166,4 @@ public class FlightMananger {
     ConnectToFlight(ps, gildi);
 		return flights;
 	}
-	
-	public void createBooking(Booking b) {
-	
-	}
-	
-	public void deleteBooking(Booking b) {
-	    
-	}
-	
-	public void createPerson(Person p) {
-	    
-	}
-	
-	public void deletePerson(Person p) {
-	    
-	}
 }
