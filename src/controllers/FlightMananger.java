@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class FlightMananger {
 
-	private static Flight[] flights;
+	private Flight[] flights;
 
-	public static void ConnectToFlight(String sql, String[] gildi) throws ClassNotFoundException {
+	public void ConnectToFlight(String sql, String[] gildi) throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		Connection connection = null;
 		try {
@@ -47,7 +47,7 @@ public class FlightMananger {
 		}
 	}
 	
-	public static Flight newFlight(ResultSet resultSet, Statement underStm) 
+	public Flight newFlight(ResultSet resultSet, Statement underStm) 
 			throws SQLException {
 		// create destination airport
 		String table = "airport";
@@ -92,7 +92,7 @@ public class FlightMananger {
 								  		 	  resultSet.getString("time")));
 	}
 	
-	public static Boolean[][] toBoolean(String arr, int size) {
+	public Boolean[][] toBoolean(String arr, int size) {
 		//System.out.println(arr.length());
 		int col = size/10;
 		int row = size%10;
@@ -108,13 +108,13 @@ public class FlightMananger {
 		return bool;
 	}
 
-	public static Flight[] search() throws ClassNotFoundException {
+	public Flight[] search() throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
 		ConnectToFlight("SELECT * FROM Flight;", new String[0]);
 		return flights;
 	}
 	
-	public static Flight[] search(LocalDate date) throws ClassNotFoundException {
+	public Flight[] search(LocalDate date) throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
 		String ps = "SELECT * FROM Flight WHERE date IS ?;";
 		String[] gildi = {date.toString()};
@@ -122,7 +122,7 @@ public class FlightMananger {
 		return flights;
 	}
 	
-	public static Flight[] search(String airportCity, Boolean to) throws ClassNotFoundException {
+	public Flight[] search(String airportCity, Boolean to) throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
 		String[] gildi = {airportCity};
 		if(to) {
@@ -137,7 +137,7 @@ public class FlightMananger {
 		return flights;
 	}
 	
-	public static Flight[] search(LocalDate date, String airportCity, Boolean to) throws ClassNotFoundException {
+	public Flight[] search(LocalDate date, String airportCity, Boolean to) throws ClassNotFoundException {
     // Sækjum flug í gagnagrunnin
     String[] gildi = {date.toString(), airportCity};
 		if(to) {
@@ -152,7 +152,7 @@ public class FlightMananger {
 		return flights;
 	}
 	
-	public static Flight[] search(String airportFrom, String airportTo) throws ClassNotFoundException {
+	public Flight[] search(String airportFrom, String airportTo) throws ClassNotFoundException {
     // Sækjum flug í gagnagrunnin
     String[] gildi = {airportFrom, airportTo};
     String ps = "SELECT * FROM Flight WHERE EXISTS(SELECT * FROM Airport WHERE "
@@ -162,7 +162,7 @@ public class FlightMananger {
 		return flights;
 	}
 	
-	public static Flight[] search(LocalDate date, String airportFrom, String airportTo) throws ClassNotFoundException {
+	public Flight[] search(LocalDate date, String airportFrom, String airportTo) throws ClassNotFoundException {
     // Sækjum flug í gagnagrunnin
     String[] gildi = {date.toString(), airportFrom, airportTo};
     String ps = "SELECT * FROM Flight WHERE date IS ? AND EXISTS(SELECT * FROM Airport WHERE "

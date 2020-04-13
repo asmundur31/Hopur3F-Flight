@@ -7,6 +7,17 @@ public class Airplain {
   private Boolean[][] needsAssistance;
   private Boolean[][] wantsFood;
 
+  /* Fastayrðing gagna:
+        - name inniheldur nafn flugvélarinnar sem er úthlutuð
+          fyrir ákveðið flug.
+        - availableSeats er tvívítt fylki sem geymir true ef sæti 
+          er laust annars false.
+        - needsAssistance er tvívítt fylki sem geymir true ef sæti 
+          er laust annars false.
+        - wantsFood er tvívítt fylki sem geymir true ef sæti 
+          er laust annars false.
+  */
+  
   public Airplain(String name, Boolean[][] seats, Boolean[][] assist, Boolean[][] food) {
     this.name = name;
     this.availableSeats = seats;

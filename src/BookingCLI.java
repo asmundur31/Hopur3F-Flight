@@ -40,11 +40,13 @@ public class BookingCLI {
           System.out.println("Símanúmer:");
           phone = scan.nextLine();
           p = new Person(name, ssn, email, phone);
-          PersonMananger.createPerson(p);
+          PersonMananger pm = new PersonMananger();
+          pm.createPerson(p);
         } else { // Notandi hefur bókað áður
           System.out.println("Kennitala: ");
           ssn = scan.nextLine();
-          p = PersonMananger.getPerson(ssn);
+          PersonMananger pm = new PersonMananger();
+          p = pm.getPerson(ssn);
           while(p==null) {
             System.out.println("Þessi notandi er ekki til.");
             System.out.println("Reyna aftur? (J/N)");
@@ -52,7 +54,7 @@ public class BookingCLI {
             if(aftur) { // Notandi vildi reyna aftur
               System.out.println("Kennitala: ");
               ssn = scan.nextLine();
-              p = PersonMananger.getPerson(ssn);
+              p = pm.getPerson(ssn);
             } else { // Notandi vildi ekki reyna aftur og við hættum
               break;
             }
@@ -76,7 +78,8 @@ public class BookingCLI {
       // Búum nú til bókun fyrir þessa person
       Booking nyBokun = new Booking(s, r, p, mainFlight, LocalDateTime.now());
       p.addBooking(nyBokun);
-      BookingMananger.createBooking(nyBokun);
+      BookingMananger bm = new BookingMananger();
+      bm.createBooking(nyBokun);
       // Prentum út bókunina
       System.out.println("Hér er bókunin þín, takk fyrir viðskiptin!");
       System.out.println(nyBokun);

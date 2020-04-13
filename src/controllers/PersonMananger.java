@@ -4,9 +4,9 @@ import java.sql.*;
 import src.datastructures.Person;
 
 public class PersonMananger {
-  private static Person person;
+  private Person person;
 
-  public static void ConnectToPerson(String sql, String[] gildi, Boolean insert) throws ClassNotFoundException {
+  public void ConnectToPerson(String sql, String[] gildi, Boolean insert) throws ClassNotFoundException {
     Class.forName("org.sqlite.JDBC");
     Connection connection = null;
 		try {
@@ -43,7 +43,7 @@ public class PersonMananger {
   }
 
   // Aðferð sem bætir persónu inn í gagnagrunninn
-  public static void createPerson(Person p) throws ClassNotFoundException {
+  public void createPerson(Person p) throws ClassNotFoundException {
     // Athugum fyrst hvort þessi person er til
     String sql = "SELECT * FROM Person WHERE ssn IS ?";
     String[] gildi = {p.getSsn()};
@@ -58,7 +58,7 @@ public class PersonMananger {
 
   // Aðferð sem skilar persónu með kennitölu ssn
   // Ef hún er ekki til þá er skilað Null
-  public static Person getPerson(String ssn) throws ClassNotFoundException {
+  public Person getPerson(String ssn) throws ClassNotFoundException {
     String sql = "SELECT * FROM Person WHERE ssn IS ?;";
     String[] gildi = {ssn};
     ConnectToPerson(sql, gildi, false);
@@ -66,7 +66,7 @@ public class PersonMananger {
   }
   
   // Aðferð sem eyðir persónu p úr gagnagrunninum
-  public static void deletePerson(Person p) throws ClassNotFoundException {
+  public void deletePerson(Person p) throws ClassNotFoundException {
     String sql = "DELETE FROM Person WHERE ssn IS ?;";
     String[] gildi = {p.getSsn()};
     ConnectToPerson(sql, gildi, true);

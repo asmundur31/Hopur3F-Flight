@@ -14,15 +14,17 @@ public class FlightCLI {
 	private static Scanner scan;
 	
 	private static void search() throws ClassNotFoundException {
-		flights = FlightMananger.search();
+    FlightMananger fm = new FlightMananger();
+		flights = fm.search();
 		pickFlight();
 	}
 	
 	private static void searchByDate() throws ClassNotFoundException {
 		System.out.println("Sláðu inn þá dagsetningu sem þig langar að fara (yyyy-mm-dd):");
 		LocalDate ld = getDate();
-		// Leita af flugum eftir gefni dagsetningu
-		flights = FlightMananger.search(ld);
+    // Leita af flugum eftir gefni dagsetningu
+    FlightMananger fm = new FlightMananger();
+		flights = fm.search(ld);
 		// Prentum út flugin
 		pickFlight();
 	}
@@ -34,8 +36,9 @@ public class FlightCLI {
 			System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga frá:");
 		}
 		String flugvollur = scan.nextLine();
-		// Leita af flugum eftir því hvort til eða frá city
-		flights = FlightMananger.search(flugvollur, to);
+    // Leita af flugum eftir því hvort til eða frá city
+    FlightMananger fm = new FlightMananger();
+		flights = fm.search(flugvollur, to);
 		// Prentum út flugin
 		pickFlight();
 	}
@@ -50,7 +53,8 @@ public class FlightCLI {
 		System.out.println("Sláðu inn þá dagsetningu sem þig langar að fara (yyyy-mm-dd):");
     LocalDate ld = getDate();
 		// Leita af flugum eftir því hvort til eða frá city og á ákveðinni dagsetningu
-		flights = FlightMananger.search(ld, city, to);
+    FlightMananger fm = new FlightMananger();
+    flights = fm.search(ld, city, to);
 		// Prentum út flugin
 		pickFlight();
 	}
@@ -61,7 +65,8 @@ public class FlightCLI {
 		System.out.println("Sláðu inn staðsetningu sem þig langar að fljúga til:");
 		String cityTil = scan.nextLine();
 		// Leita af flugum frá cityFra og til cityTil
-		flights = FlightMananger.search(cityFra, cityTil);
+    FlightMananger fm = new FlightMananger();
+    flights = fm.search(cityFra, cityTil);
 		// Prentum út flugin
 		pickFlight();
 	}
@@ -74,7 +79,8 @@ public class FlightCLI {
 		System.out.println("Sláðu inn þá dagsetningu sem þig langar að fara (yyyy-mm-dd):");
 		LocalDate ld = getDate();
 		// Leita af flugum frá cityFra og til cityTil á ákveðinni dagsetningu
-		flights = FlightMananger.search(ld, cityFra, cityTil);
+    FlightMananger fm = new FlightMananger();
+    flights = fm.search(ld, cityFra, cityTil);
 		// Prentum út flugin
 		pickFlight();
 	}
@@ -120,7 +126,13 @@ public class FlightCLI {
 			System.out.println(i++ + ": " + f);
 		}
 		if(i==1) {
-			System.out.println("Því miður fundust enginn flug.");
+      System.out.println("Því miður fundust enginn flug.");
+      System.out.println("Takk fyrir að nota leitarvél Hóps 3F");
+      System.out.println("Endilega láttu okkur vita hvað þér fannst");
+      System.out.println("Öll komment eru vel þegin:");
+      String comment = scan.nextLine();
+      System.out.println("Komment:");
+      System.out.println(comment);
 		} else {
 			System.out.println();
 			System.out.println("Veldu flug á bilinum 1 til "+(i-1)+":");

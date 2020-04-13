@@ -5,10 +5,10 @@ import java.sql.*;
 import src.datastructures.*;
 
 public class BookingMananger {
-  private static Booking[] bookings;
-  private static String availableSeats;
+  private Booking[] bookings;
+  private String availableSeats;
 
-  public static void ConnectToBooking(String sql, String[] gildi, String type) throws ClassNotFoundException {
+  public void ConnectToBooking(String sql, String[] gildi, String type) throws ClassNotFoundException {
     Class.forName("org.sqlite.JDBC");
     Connection connection = null;
     try {
@@ -43,7 +43,7 @@ public class BookingMananger {
     }
   }
 
-  public static void createBooking(Booking b) throws ClassNotFoundException {
+  public void createBooking(Booking b) throws ClassNotFoundException {
     // Uppfærum available_seat breytunna í töflunni Airplain
     String sql = "SELECT availableSeats FROM Airplain WHERE "+
                  "flightDate IS ? AND flightNumber IS ?;";
@@ -71,11 +71,11 @@ public class BookingMananger {
     // með SQL skipunum
   }
 
-  public static void delete(Booking b) {
+  public void delete(Booking b) {
     // Ef við viljum bjóða uppá að hætta við bókun
   }
 
-  public static Booking[] getBookings(Person p) {
+  public Booking[] getBookings(Person p) {
     // Ef við viljum bjóða uppá að sækja allar bókanir
     // fyrir einhverja manneskju p
     return bookings;
