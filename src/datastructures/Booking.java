@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Booking {
+
   private char seat;
   private int row;
   private Person person;
@@ -20,6 +21,7 @@ public class Booking {
         - bookingTime er tíminn sem bókunin var gerð.
   */
 
+  // Smiður fyrir bókun
   public Booking(char seat, int row, Person person, Flight flight, LocalDateTime bookingTime) {
     this.seat = seat;
     this.row = row;
@@ -28,34 +30,42 @@ public class Booking {
     this.bookingTime = bookingTime;
   }
 
+  // Notkun: char s = b.getSeat()
+  // Fyrir:  b er hlutur af taginu Booking.
+  // Eftir:  s er sætið sem er bókað, A<=s<=breidd vélar.
   public char getSeat() {
     return seat;
   }
 
+  // Notkun: int r = b.getRow()
+  // Fyrir:  b er hlutur af taginu Booking.
+  // Eftir:  r er röðin sem er bókað, 1<=r<=lengd vélar.
   public int getRow() {
     return row;
   }
 
-  public void setSeat(char s) {
-    seat = s;
-  }
-
-  public void setRow(int r) {
-    row = r;
-  }
-
+  // Notkun: Person p = b.getPerson()
+  // Fyrir:  b er hlutur af taginu Booking.
+  // Eftir:  p er persónan sem bókaði þessa bókun.
   public Person getPerson() {
     return person;
   }
 
+  // Notkun: Flight f = b.getFlight()
+  // Fyrir:  b er hlutur af taginu Booking.
+  // Eftir:  f er flugið sem bókunin bókar.
   public Flight getFlight() {
     return flight;
   }
 
+  // Notkun: LocalDateTime ldt = b.getBookingTime()
+  // Fyrir:  b er hlutur af taginu Booking.
+  // Eftir:  ldt er tíminn sem bókuninn var framkvæmd.
   public LocalDateTime getBookingTime() {
     return bookingTime;
   }
 
+  // toString aðferð fyrir bókun.
   public String toString() {
     String bokun = "Þín bókun:\n";
     bokun += "=====================================";
