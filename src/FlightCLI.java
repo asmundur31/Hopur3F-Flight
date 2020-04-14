@@ -2,7 +2,8 @@ package src;
 
 import java.util.Scanner; // Import the Scanner class
 
-import src.controllers.FlightMananger;
+import src.controllers.*;
+import src.datastructures.Booking;
 import src.datastructures.Flight;
 
 import java.time.*;
@@ -126,13 +127,13 @@ public class FlightCLI {
 			System.out.println(i++ + ": " + f);
 		}
 		if(i==1) {
-      System.out.println("Því miður fundust enginn flug.");
-      System.out.println("Takk fyrir að nota leitarvél Hóps 3F");
-      System.out.println("Endilega láttu okkur vita hvað þér fannst");
-      System.out.println("Öll komment eru vel þegin:");
-      String comment = scan.nextLine();
-      System.out.println("Komment:");
-      System.out.println(comment);
+			System.out.println("Því miður fundust enginn flug.");
+			System.out.println("Takk fyrir að nota leitarvél Hóps 3F");
+			System.out.println("Endilega láttu okkur vita hvað þér fannst");
+			System.out.println("Öll komment eru vel þegin:");
+			String comment = scan.nextLine();
+			System.out.println("Komment:");
+			System.out.println(comment);
 		} else {
 			System.out.println();
 			System.out.println("Veldu flug á bilinum 1 til "+(i-1)+":");
@@ -145,8 +146,10 @@ public class FlightCLI {
 		}
 	}
 	
-	public static void main(final String args[]) throws ClassNotFoundException {
+
+	public static void lookAtFlights() throws ClassNotFoundException {
 		scan = new Scanner(System.in);
+
 		System.out.println("Search flight");
 		System.out.println("  Search: press 0");
 		System.out.println("  Search by date: press 1");
@@ -166,6 +169,42 @@ public class FlightCLI {
 		else if (nr.equals("5")) searchByDateAirport(true);
 		else if (nr.equals("6")) searchByDepartureDestination();
 		else if (nr.equals("7")) searchByDateDepartureDestination();
+	}
+	
+	public static void lookAtBookings() throws ClassNotFoundException {
+
+		scan = new Scanner(System.in);
+		System.out.println("Sláðu inn kennitölu");
+		final String ssn = scan.next();
+
+		PersonMananger pm = new PersonMananger();
+		BookingMananger bm = new BookingMananger();
+		Booking[] bookings = bm.getBookings(pm.getPerson(ssn));
+		if (bookings==null) System.out.println("Ekki er til flug undir þessari kennitölu");
+		else for (Booking b : bookings) {
+				System.out.println(b);
+			 }
+	}
+	
+	public static void main(String args[]) throws ClassNotFoundException {
+		scan = new Scanner(System.in);
+
+		do {
+			System.out.println("Viltu?");
+			System.out.println("  Velja flug: press 1");
+			System.out.println("  Skoða Bókanir: press 2");
+			System.out.println("  Búa til flug: press 3");
+			String nr = scan.next();
+		
+			if (nr.equals("1")) lookAtFlights();
+			if (nr.equals("2")) lookAtBookings();
+			if (nr.equals("3")) (new FlightMananger()).makeFlight();
+						
+			System.out.println("Halda áfram? (y/n)");
+			
+		} while (scan.next().equals("y"));
+						
 		scan.close();
+
 	}
 }

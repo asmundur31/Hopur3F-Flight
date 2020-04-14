@@ -19,14 +19,14 @@ public class FlightMananger {
   */
 
   // Aðferð sem tengist við gagnagrunnin Flights.db.
-  // Notkun: ConnectToFlight(sql,gildi)
+  // Notkun: connectToFlight(sql,gildi)
   // Fyrir:  sql er strengur sem inniheldur SQL fyrirspurnina og
   //         gildi er listi af strengjum sem á eftir að setja inn
   //         í sql.
   // Eftir:  Búið er að setja stökin í gildi inn í sql, framkvæma
   //         leitina í gagnagrunninum og setja öll flug sem fundust
   //         í listan flights.
-  private void ConnectToFlight(String sql, String[] gildi)
+  private void connectToFlight(String sql, String[] gildi)
         throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		Connection connection = null;
@@ -151,7 +151,7 @@ public class FlightMananger {
   // Efrir:  flights inniheldur öll flug í gagnagrunninum.
 	public Flight[] search() throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
-		ConnectToFlight("SELECT * FROM Flight;", new String[0]);
+		connectToFlight("SELECT * FROM Flight;", new String[0]);
 		return flights;
 	}
   
@@ -165,7 +165,7 @@ public class FlightMananger {
 		// Sækjum flug í gagnagrunnin
 		String ps = "SELECT * FROM Flight WHERE date IS ?;";
 		String[] gildi = {date.toString()};
-		ConnectToFlight(ps, gildi);
+		connectToFlight(ps, gildi);
 		return flights;
   }
   
@@ -185,11 +185,11 @@ public class FlightMananger {
 		if(to) {
       String ps = "SELECT * FROM Flight WHERE EXISTS(SELECT * FROM"+
                   " Airport WHERE airportTo IS name AND city IS ?);";
-			ConnectToFlight(ps, gildi);
+			connectToFlight(ps, gildi);
 		} else {
       String ps = "SELECT * FROM Flight WHERE EXISTS(SELECT * FROM"+
                   " Airport WHERE airportFrom IS name AND city IS ?);";
-			ConnectToFlight(ps, gildi);
+			connectToFlight(ps, gildi);
 		}
 		return flights;
 	}
@@ -212,12 +212,12 @@ public class FlightMananger {
       String ps = "SELECT * FROM Flight WHERE date IS ? AND EXISTS"+
                   "(SELECT * FROM Airport WHERE airportTo IS name "+
                   "AND city IS ?);";
-			ConnectToFlight(ps, gildi);
+			connectToFlight(ps, gildi);
 		} else {
       String ps = "SELECT * FROM Flight WHERE date IS ? AND EXISTS"+
                   "(SELECT * FROM Airport WHERE airportFrom IS name"+
                   " AND city IS ?);";
-			ConnectToFlight(ps, gildi);
+			connectToFlight(ps, gildi);
 		}
 		return flights;
 	}
@@ -238,7 +238,7 @@ public class FlightMananger {
                 " Airport WHERE airportFrom IS name AND city IS ?)"+
                 " AND EXISTS(SELECT * FROM Airport WHERE airportTo"+
                 " IS name AND city IS ?);";
-    ConnectToFlight(ps, gildi);
+    connectToFlight(ps, gildi);
 		return flights;
 	}
   
@@ -259,7 +259,23 @@ public class FlightMananger {
                 "(SELECT * FROM Airport WHERE airportFrom IS name"+
                 " AND city IS ?) AND EXISTS(SELECT * FROM Airport"+
                 " WHERE airportTo IS name AND city IS ?);";
-    ConnectToFlight(ps, gildi);
+    connectToFlight(ps, gildi);
 		return flights;
-	}
+  }
+  
+  public Flight flightFromBooking(String string) throws ClassNotFoundException {
+	  String[] s1 = string.split("\\|");
+	  String[] s2 = s1[1].split("T");
+	  String[] g = {s1[0], s2[0], s2[1]};
+	  String s = "SELECT * FROM flight WHERE flight_number IS ? AND date IS ? " +
+	  			 "AND ?";
+	  connectToFlight(s, g);
+	  return flights[0];
+	  
+  }
+
+  public void makeFlight() {
+	// TODO Auto-generated method stub
+	
+  }
 }

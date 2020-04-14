@@ -75,6 +75,16 @@ public class BookingCLI {
       char s = validSaeti.charAt(validSaeti.length()-1);
       int r = Integer.parseInt(validSaeti.substring(0, validSaeti.length()-1));
       mainFlight.getAirplain().setAvailableSeats(s, r);
+      System.out.println("Má bjóða þér Mat í fluginu");
+      if (getAns()) {
+    	  mainFlight.getAirplain().setWantsFood(s,r);
+      }
+      System.out.println("Má bjóða þér Aðstoð í fluginu");
+      if (getAns()) {
+    	  mainFlight.getAirplain().setNeedsAssistance(s,r);
+      }
+      
+      
       // Búum nú til bókun fyrir þessa person
       Booking nyBokun = new Booking(s, r, p, mainFlight, LocalDateTime.now());
       p.addBooking(nyBokun);
