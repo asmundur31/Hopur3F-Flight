@@ -2,14 +2,18 @@ package src.controllers;
 
 import src.datastructures.*;
 
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class FlightMananger {
 
 	private Flight[] flights;
+	private Airport airport;
+	private String[] airports;
 
   /* Fastayrðing gagna
         - flights er listi af flugum sem á að skila eftir hverja
@@ -263,6 +267,13 @@ public class FlightMananger {
 		return flights;
   }
   
+  
+  // Notkun: Flight flights = fm.flightFromBooking(String string)
+  // Fyrir:  fm er hlutur af taginu FlightMananger.
+  //         string er strengur sem inniheldur flight_number og 
+  //			samanlagða dagsetnigu og tímasetningu.
+  // Efrir:  flights inniheldur það eina flug í gagnagrunninum þar með gefnu
+  //			flugnúmeri og tíma
   public Flight flightFromBooking(String string) throws ClassNotFoundException {
 	  String[] s1 = string.split("\\|");
 	  String[] s2 = s1[1].split("T");
@@ -273,9 +284,49 @@ public class FlightMananger {
 	  return flights[0];
 	  
   }
+  
+  public String[] findAllAirports() throws ClassNotFoundException {
+	  Class.forName("org.sqlite.JDBC");
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection("jdbc:sqlite:src/database/Flights.db");
+			Statement stm = connection.createStatement();
+			stm.setQueryTimeout(30);
+			ResultSet rs = stm.executeQuery("SELECT name FROM airport");
+			ArrayList<String> list = new ArrayList<String>();
+			
+			while (rs.next()) {
+				list.add(rs.getString("name"));
+			}
 
-  public void makeFlight() {
-	// TODO Auto-generated method stub
+			airports = new String[list.size()];
+			list.toArray(airports);
+			
+  		} catch(SQLException e) {
+  			System.err.println(e.getMessage());
+  		} finally {
+  			try {
+  				if(connection != null)
+  					connection.close();
+	 	} catch(SQLException e) {
+	 		System.err.println(e);
+	 		}
+  		}
+		return	airports;
+  }
+  
+
+  public void makeFlight(String to, String from, String airplain, String flightNr,
+		  				 String date, String time) throws ClassNotFoundException {
+	  
+	  
+	  
+
+	  System.out.println("here");
+	//  sc.close();
+
+	  
+
 	
   }
 }

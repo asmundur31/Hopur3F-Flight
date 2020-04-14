@@ -186,6 +186,48 @@ public class FlightCLI {
 			 }
 	}
 	
+	public static void makeFlight() throws ClassNotFoundException {
+		FlightMananger fm = new FlightMananger();
+		String[] airports = fm.findAllAirports();
+		int nrOfAirports = airports.length;
+		
+		  System.out.println("Veldu Flugvöll 1 til" + nrOfAirports);
+		  for (int i = 0; i < nrOfAirports; i++) {
+			  System.out.println(i+1 + ": " + airports[i]);
+		  }
+		  System.out.println("Veldu flugvöll til að flúga frá");
+		  int to = 0;
+		  do {
+			  to = Integer.valueOf(scan.next());
+			  if (to < 1 || to > nrOfAirports) 
+				  System.out.println("talan þarf að vera á bilinu 1- " + nrOfAirports);
+
+		  } while (to < 1 || to > nrOfAirports);
+		  
+		  System.out.println("Veldu flugvöll til að flúga til");
+		  int from = 0;
+
+		  do {
+			  from = Integer.valueOf(scan.next());
+			  if (from == to) System.out.println("flugvöllur frá og til má ekki vera sá sami");
+			  if (from < 1 || from > nrOfAirports) 
+				  System.out.println("talan þarf að vera á bilinu 1- " + nrOfAirports);
+
+		  } while (from < 1 || from > nrOfAirports || from == to);
+		  
+		  System.out.println("Sláðu inn: ");
+		  System.out.println("  Nafn á flugvél (AB-123");
+		  String airplain = scan.next();
+		  System.out.println("  Flugnúmer (FT-1234");
+		  String flightNr = scan.next();
+		  System.out.println("  Dagsetning (yyyy-mm-dd");
+		  String date = scan.next();
+		  System.out.println("  Tímasetning (hh:mm");
+		  String time = scan.next();
+		  fm.makeFlight(airports[to-1], airports[from-1], airplain, flightNr, date, time);		  
+		
+	}
+	
 	public static void main(String args[]) throws ClassNotFoundException {
 		scan = new Scanner(System.in);
 
@@ -198,7 +240,7 @@ public class FlightCLI {
 		
 			if (nr.equals("1")) lookAtFlights();
 			if (nr.equals("2")) lookAtBookings();
-			if (nr.equals("3")) (new FlightMananger()).makeFlight();
+			if (nr.equals("3")) makeFlight();
 						
 			System.out.println("Halda áfram? (y/n)");
 			
