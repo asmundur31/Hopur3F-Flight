@@ -1,6 +1,8 @@
 package src.controllers;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import src.datastructures.*;
 
@@ -47,6 +49,22 @@ public class BookingMananger {
       } else if(type.equals("getSeats")) {
         ResultSet resultSet = ps.executeQuery();
         availableSeats = resultSet.getString("availableSeats");
+      } else if(type.equals("getBookings")) {
+    	  ArrayList<Booking> list = new ArrayList<Booking>();
+    	  ResultSet rs = ps.executeQuery();
+    	  PersonMananger pm = new PersonMananger(); 
+    	  FlightMananger fm = new FlightMananger();
+    	  while (rs.next()) {    		
+    		  list.add(new Booking(rs.getString("seat").charAt(0), rs.getInt("row"), 
+    				   pm.getPerson(rs.getString("person")), 
+    				   fm.flightFromBooking(rs.getString("flight")), 
+    				   LocalDateTime.parse(rs.getString("booking_time"))));
+    	  }
+    	  
+    	  System.out.println(list.size());
+		  bookings = new Booking[list.size()];
+		  list.toArray(bookings);
+    	  
       }
     } catch (SQLException e) {
       System.err.println(e.getMessage());
@@ -103,9 +121,13 @@ public class BookingMananger {
     // Ef við viljum bjóða uppá að hætta við bókun
   }
 
-  public Booking[] getBookings(Person p) {
+  public Booking[] getBookings(Person p) throws ClassNotFoundException {
     // Ef við viljum bjóða uppá að sækja allar bókanir
     // fyrir einhverja manneskju p
+	  System.out.println("getBookings");
+	  String sql = "SELECT * FROM Booking WHERE person IS ?";
+	  String [] gild = { p.getSsn() };
+	  ConnectToBooking(sql, gild, "getBookings");
     return bookings;
   }
 }
