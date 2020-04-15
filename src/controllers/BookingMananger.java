@@ -62,7 +62,6 @@ public class BookingMananger {
     	  }
 		    bookings = new Booking[list.size()];
 		    list.toArray(bookings);
-    	  
       }
     } catch (SQLException e) {
       System.err.println(e.getMessage());
@@ -145,9 +144,11 @@ public class BookingMananger {
     // Ef við viljum bjóða uppá að hætta við bókun
   }
 
+  // Notkun: Booking[] bookings = bm.getBookings(p)
+  // Fyrir:  bm er hlutur af taginu BookingMananger.
+  //         p er persóna sem á að finna allar bókanir fyrir.
+  // Eftir:  Búið að setja allar bókannir persónu p í bookings.
   public Booking[] getBookings(Person p) throws ClassNotFoundException {
-    // Ef við viljum bjóða uppá að sækja allar bókanir
-    // fyrir einhverja manneskju p
 	  String sql = "SELECT * FROM Booking WHERE person IS ?";
 	  String [] gild = { p.getSsn() };
 	  ConnectToBooking(sql, gild, "getBookings");

@@ -9,7 +9,8 @@ import src.datastructures.Flight;
 import java.time.*;
 import java.time.format.DateTimeParseException;
 
-
+// Hér er einfaldur commad line interface klasi sem býr til viðmót
+// fyrir notenda sem langar að skoða flug, bóka flug eða búa til flug
 public class FlightCLI {
 	private static Flight[] flights;
 	private static Scanner scan;

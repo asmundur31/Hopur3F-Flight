@@ -9,6 +9,8 @@ import src.datastructures.Booking;
 import src.datastructures.Flight;
 import src.datastructures.Person;
 
+// Hér er einfaldur commad line interface klasi sem býr til viðmót
+// fyrir notenda sem langar að skoða flug, bóka flug eða búa til flug
 public class BookingCLI {
   private static Scanner scan;
 

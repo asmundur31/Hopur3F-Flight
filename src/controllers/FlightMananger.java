@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class FlightMananger {
 
 	private Flight[] flights;
-	private Airport airport;
 	private String[] airports;
 
   /* Fastayrðing gagna
@@ -18,16 +17,23 @@ public class FlightMananger {
           leitaraðferð. Hann er tómur ef engin flug finnast annars
           inniheldur hann öll flug sem uppfylla skilyrði leitar-
           aðferðarinnar.
+        - airports er listi af flugvöllum sem á að skila eftir 
+          að búið er að leita af flugvöllum. Hann er tómur ef 
+          engin flugvöllur finnst annars inniheldur hann alla 
+          flugvelli.
   */
 
   // Aðferð sem tengist við gagnagrunnin Flights.db.
-  // Notkun: connectToFlight(sql,gildi)
+  // Notkun: connectToFlight(sql,gildi,insert)
   // Fyrir:  sql er strengur sem inniheldur SQL fyrirspurnina og
   //         gildi er listi af strengjum sem á eftir að setja inn
   //         í sql.
+  //         insert er sanngildi sem segir til um hvort sé verið 
+  //         að setja gögn inn í gagnagrunnin eða ekki.
   // Eftir:  Búið er að setja stökin í gildi inn í sql, framkvæma
   //         leitina í gagnagrunninum og setja öll flug sem fundust
-  //         í listan flights.
+  //         í listan flights ef insert er ósatt annars er gagna-
+  //         grunnurinn uppfærður. 
   private void connectToFlight(String sql, String[] gildi, Boolean insert)
         throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
@@ -287,6 +293,10 @@ public class FlightMananger {
 	  
   }
   
+  // Notkun: String[] airports = fm.findAllAirports()
+  // Fyrir:  fm er hlutur af taginu FlightMananger.
+  // Eftir:  Búið er að setja alla flugvelli í gagnagrunninum í 
+  //         airports.
   public String[] findAllAirports() throws ClassNotFoundException {
 	  Class.forName("org.sqlite.JDBC");
 		Connection connection = null;
@@ -304,20 +314,31 @@ public class FlightMananger {
 			airports = new String[list.size()];
 			list.toArray(airports);
 			
-  		} catch(SQLException e) {
-  			System.err.println(e.getMessage());
-  		} finally {
-  			try {
-  				if(connection != null)
-  					connection.close();
-	 	} catch(SQLException e) {
-	 		System.err.println(e);
-	 		}
-  		}
-		return	airports;
+  	} catch(SQLException e) {
+  		System.err.println(e.getMessage());
+  	} finally {
+      try {
+        if(connection != null)
+          connection.close();
+      } catch(SQLException e) {
+        System.err.println(e);
+      }
+    }
+    return	airports;
   }
   
-
+  // Notkun: fm.makeFlight(to,from,airplain,flightNr,date,time)
+  // Fyrir:  fm er hlutur af taginu FlightMananger
+  //         to og from eru nöfn flugvalla sem flugið flýgur frá
+  //         og til.
+  //         airplain er nafn flugvélarinnar sem flýgur flugið.
+  //         flightNr er flugnúmer flugvélarinnar.
+  //         date er dagsetning brottfarartíma flugsins.
+  //         time er brottfarartími flugsins.
+  // Eftir:  Búið er að bæta við flugi í Flight töfluna í 
+  //         gagnagrunninn með upplýsingunum hér að ofan og bæta 
+  //         við samsvarandi línu í airplain því hvert flug fær 
+  //         sína flugvél.
   public void makeFlight(String to, String from, String airplain, String flightNr,
 		  				 String date, String time) throws ClassNotFoundException {
     // Athugum hvort þetta flug er ólöglegt, þ.e. hvort lykillinn
