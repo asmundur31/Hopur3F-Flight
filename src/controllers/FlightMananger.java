@@ -2,12 +2,10 @@ package src.controllers;
 
 import src.datastructures.*;
 
-import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class FlightMananger {
 
@@ -30,7 +28,7 @@ public class FlightMananger {
   // Eftir:  Búið er að setja stökin í gildi inn í sql, framkvæma
   //         leitina í gagnagrunninum og setja öll flug sem fundust
   //         í listan flights.
-  private void connectToFlight(String sql, String[] gildi)
+  private void connectToFlight(String sql, String[] gildi, Boolean insert)
         throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		Connection connection = null;
@@ -44,7 +42,11 @@ public class FlightMananger {
 				ps.setString(i,gildi[i-1]);
 			}
 			ps.setQueryTimeout(30);
-			
+      
+      if(insert) {
+        ps.executeUpdate();
+        return;
+      }
 			ArrayList<Flight> list = new ArrayList<Flight>();
 
 			ResultSet resultSet = ps.executeQuery();
@@ -155,7 +157,7 @@ public class FlightMananger {
   // Efrir:  flights inniheldur öll flug í gagnagrunninum.
 	public Flight[] search() throws ClassNotFoundException {
 		// Sækjum flug í gagnagrunnin
-		connectToFlight("SELECT * FROM Flight;", new String[0]);
+		connectToFlight("SELECT * FROM Flight;", new String[0], false);
 		return flights;
 	}
   
@@ -169,7 +171,7 @@ public class FlightMananger {
 		// Sækjum flug í gagnagrunnin
 		String ps = "SELECT * FROM Flight WHERE date IS ?;";
 		String[] gildi = {date.toString()};
-		connectToFlight(ps, gildi);
+		connectToFlight(ps, gildi, false);
 		return flights;
   }
   
@@ -189,11 +191,11 @@ public class FlightMananger {
 		if(to) {
       String ps = "SELECT * FROM Flight WHERE EXISTS(SELECT * FROM"+
                   " Airport WHERE airportTo IS name AND city IS ?);";
-			connectToFlight(ps, gildi);
+			connectToFlight(ps, gildi, false);
 		} else {
       String ps = "SELECT * FROM Flight WHERE EXISTS(SELECT * FROM"+
                   " Airport WHERE airportFrom IS name AND city IS ?);";
-			connectToFlight(ps, gildi);
+			connectToFlight(ps, gildi, false);
 		}
 		return flights;
 	}
@@ -216,12 +218,12 @@ public class FlightMananger {
       String ps = "SELECT * FROM Flight WHERE date IS ? AND EXISTS"+
                   "(SELECT * FROM Airport WHERE airportTo IS name "+
                   "AND city IS ?);";
-			connectToFlight(ps, gildi);
+			connectToFlight(ps, gildi, false);
 		} else {
       String ps = "SELECT * FROM Flight WHERE date IS ? AND EXISTS"+
                   "(SELECT * FROM Airport WHERE airportFrom IS name"+
                   " AND city IS ?);";
-			connectToFlight(ps, gildi);
+			connectToFlight(ps, gildi, false);
 		}
 		return flights;
 	}
@@ -242,7 +244,7 @@ public class FlightMananger {
                 " Airport WHERE airportFrom IS name AND city IS ?)"+
                 " AND EXISTS(SELECT * FROM Airport WHERE airportTo"+
                 " IS name AND city IS ?);";
-    connectToFlight(ps, gildi);
+    connectToFlight(ps, gildi, false);
 		return flights;
 	}
   
@@ -263,7 +265,7 @@ public class FlightMananger {
                 "(SELECT * FROM Airport WHERE airportFrom IS name"+
                 " AND city IS ?) AND EXISTS(SELECT * FROM Airport"+
                 " WHERE airportTo IS name AND city IS ?);";
-    connectToFlight(ps, gildi);
+    connectToFlight(ps, gildi, false);
 		return flights;
   }
   
@@ -280,7 +282,7 @@ public class FlightMananger {
 	  String[] g = {s1[0], s2[0], s2[1]};
 	  String s = "SELECT * FROM flight WHERE flight_number IS ? AND date IS ? " +
 	  			 "AND ?";
-	  connectToFlight(s, g);
+	  connectToFlight(s, g, false);
 	  return flights[0];
 	  
   }
@@ -318,15 +320,36 @@ public class FlightMananger {
 
   public void makeFlight(String to, String from, String airplain, String flightNr,
 		  				 String date, String time) throws ClassNotFoundException {
-	  
-	  
-	  
-
-	  System.out.println("here");
-	//  sc.close();
-
-	  
-
-	
+    // Athugum hvort þetta flug er ólöglegt, þ.e. hvort lykillinn
+    // í Flight töflunni sé til staðar
+    String sql = "SELECT * FROM Flight WHERE flight_number IS ? " +
+                 "AND date IS ?;";
+    String[] gildi = {flightNr, date};
+	  connectToFlight(sql, gildi, false);
+	  if(flights.length == 0) { // Löglegt flug
+      // Setjum flugið í gagnagrunninn
+      sql = "INSERT INTO Flight(airportFrom, airportTo, airplain,"+
+            " flight_number, date, time) VALUES(?,?,?,?,?,?);";
+      String[] nyGildi = {to,from,airplain,flightNr,date,time};
+      connectToFlight(sql, nyGildi, true);
+      // Bætum líka við flugvél fyrir flugið
+      sql = "INSERT INTO Airplain(name, availableSeats, needsAssistance" +
+            ", wantsFood, size, flightDate, flightNumber) "+
+            "VALUES(?,?,?,?,?,?,?);";
+      String[] g = {
+          airplain,
+          "1111111111111111111111111111111111111111",
+          "0000000000000000000000000000000000000000",
+          "0000000000000000000000000000000000000000",
+          "104",
+          date + "T" + time,
+          flightNr};
+      connectToFlight(sql, g, true);
+      System.out.println("Það tókst að bæta flugi við!");
+    } else { // Ólöglegt flug
+      System.out.println("Ekki tókst að bæta flugi við!");
+      System.out.println("Ólöglegt flug, til er flug með sama "+
+                         "flugnúmer og brottfaratíma!");
+    }	
   }
 }

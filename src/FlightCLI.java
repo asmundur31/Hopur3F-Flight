@@ -146,7 +146,6 @@ public class FlightCLI {
 		}
 	}
 	
-
 	public static void lookAtFlights() throws ClassNotFoundException {
 		scan = new Scanner(System.in);
 
@@ -171,19 +170,19 @@ public class FlightCLI {
 		else if (nr.equals("7")) searchByDateDepartureDestination();
 	}
 	
-	public static void lookAtBookings() throws ClassNotFoundException {
-
+  public static void lookAtBookings() 
+        throws ClassNotFoundException {
 		scan = new Scanner(System.in);
-		System.out.println("Sláðu inn kennitölu");
+		System.out.println("Sláðu inn kennitölu:");
 		final String ssn = scan.next();
 
 		PersonMananger pm = new PersonMananger();
 		BookingMananger bm = new BookingMananger();
 		Booking[] bookings = bm.getBookings(pm.getPerson(ssn));
-		if (bookings==null) System.out.println("Ekki er til flug undir þessari kennitölu");
+		if (bookings==null) System.out.println("Ekki er til flug undir þessari kennitölu!");
 		else for (Booking b : bookings) {
 				System.out.println(b);
-			 }
+		}
 	}
 	
 	public static void makeFlight() throws ClassNotFoundException {
@@ -191,43 +190,63 @@ public class FlightCLI {
 		String[] airports = fm.findAllAirports();
 		int nrOfAirports = airports.length;
 		
-		  System.out.println("Veldu Flugvöll 1 til" + nrOfAirports);
-		  for (int i = 0; i < nrOfAirports; i++) {
-			  System.out.println(i+1 + ": " + airports[i]);
-		  }
-		  System.out.println("Veldu flugvöll til að flúga frá");
-		  int to = 0;
-		  do {
-			  to = Integer.valueOf(scan.next());
-			  if (to < 1 || to > nrOfAirports) 
-				  System.out.println("talan þarf að vera á bilinu 1- " + nrOfAirports);
+    System.out.println("Veldu Flugvöll 1 til " + nrOfAirports);
+    for (int i = 0; i < nrOfAirports; i++) {
+      System.out.println(i+1 + ": " + airports[i]);
+    }
+    System.out.println("Veldu flugvöll til að flúga frá");
+    int to = 0;
+    do {
+      to = Integer.valueOf(scan.next());
+      if (to < 1 || to > nrOfAirports) 
+        System.out.println("Talan þarf að vera á bilinu 1-" + nrOfAirports);
 
-		  } while (to < 1 || to > nrOfAirports);
-		  
-		  System.out.println("Veldu flugvöll til að flúga til");
-		  int from = 0;
+    } while (to < 1 || to > nrOfAirports);
+    
+    System.out.println("Veldu flugvöll til að flúga til");
+    int from = 0;
 
-		  do {
-			  from = Integer.valueOf(scan.next());
-			  if (from == to) System.out.println("flugvöllur frá og til má ekki vera sá sami");
-			  if (from < 1 || from > nrOfAirports) 
-				  System.out.println("talan þarf að vera á bilinu 1- " + nrOfAirports);
+    do {
+      from = Integer.valueOf(scan.next());
+      if (from == to) System.out.println("Flugvöllur frá og til má ekki vera sá sami");
+      if (from < 1 || from > nrOfAirports) 
+        System.out.println("Talan þarf að vera á bilinu 1 - " + nrOfAirports);
 
-		  } while (from < 1 || from > nrOfAirports || from == to);
-		  
-		  System.out.println("Sláðu inn: ");
-		  System.out.println("  Nafn á flugvél (AB-123");
-		  String airplain = scan.next();
-		  System.out.println("  Flugnúmer (FT-1234");
-		  String flightNr = scan.next();
-		  System.out.println("  Dagsetning (yyyy-mm-dd");
-		  String date = scan.next();
-		  System.out.println("  Tímasetning (hh:mm");
-		  String time = scan.next();
-		  fm.makeFlight(airports[to-1], airports[from-1], airplain, flightNr, date, time);		  
-		
-	}
-	
+    } while (from < 1 || from > nrOfAirports || from == to);
+    
+    System.out.println("Sláðu inn: ");
+    System.out.println("  Nafn á flugvél (AB-123)");
+    String airplain = scan.next();
+    System.out.println("  Flugnúmer (FT-1234)");
+    String flightNr = scan.next();
+    System.out.println("  Dagsetning (yyyy-mm-dd)");
+    String date = scan.next();
+    System.out.println("  Tímasetning (hh:mm)");
+    String time = scan.next();
+    fm.makeFlight(airports[to-1], airports[from-1], airplain, flightNr, date, time);
+  }
+  
+  // Aðferð sem athugar hvort notandi svarar játandi eða ekki
+  private static Boolean getAns() {
+    scan = new Scanner(System.in);
+    String svar = scan.nextLine();
+    if(svar.equals("") ||
+       svar.equals("J") || 
+       svar.equals("j") || 
+       svar.equals("Já") || 
+       svar.equals("já") || 
+       svar.equals("Y") || 
+       svar.equals("y") || 
+       svar.equals("Yes") ||
+       svar.equals("yes") || 
+       svar.equals("Jebbs") ||
+       svar.equals("jebbs")) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 	public static void main(String args[]) throws ClassNotFoundException {
 		scan = new Scanner(System.in);
 
@@ -242,11 +261,10 @@ public class FlightCLI {
 			if (nr.equals("2")) lookAtBookings();
 			if (nr.equals("3")) makeFlight();
 						
-			System.out.println("Halda áfram? (y/n)");
+			System.out.println("Halda áfram? (J/N)");
 			
-		} while (scan.next().equals("y"));
+		} while (getAns());
 						
 		scan.close();
-
 	}
 }

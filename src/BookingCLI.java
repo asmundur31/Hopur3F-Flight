@@ -75,15 +75,14 @@ public class BookingCLI {
       char s = validSaeti.charAt(validSaeti.length()-1);
       int r = Integer.parseInt(validSaeti.substring(0, validSaeti.length()-1));
       mainFlight.getAirplain().setAvailableSeats(s, r);
-      System.out.println("Má bjóða þér Mat í fluginu");
+      System.out.println("Má bjóða þér mat í fluginu? (J/N)");
       if (getAns()) {
     	  mainFlight.getAirplain().setWantsFood(s,r);
       }
-      System.out.println("Má bjóða þér Aðstoð í fluginu");
+      System.out.println("Má bjóða þér aðstoð í fluginu? (J/N)");
       if (getAns()) {
     	  mainFlight.getAirplain().setNeedsAssistance(s,r);
       }
-      
       
       // Búum nú til bókun fyrir þessa person
       Booking nyBokun = new Booking(s, r, p, mainFlight, LocalDateTime.now());
@@ -110,10 +109,13 @@ public class BookingCLI {
        svar.equals("J") || 
        svar.equals("j") || 
        svar.equals("Já") || 
+       svar.equals("já") || 
        svar.equals("Y") || 
        svar.equals("y") || 
        svar.equals("Yes") ||
-       svar.equals("Jebbs")) {
+       svar.equals("yes") || 
+       svar.equals("Jebbs") ||
+       svar.equals("jebbs")) {
       return true;
     } else {
       return false;

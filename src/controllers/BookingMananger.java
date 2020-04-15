@@ -62,8 +62,8 @@ public class BookingMananger {
     	  }
     	  
     	  System.out.println(list.size());
-		  bookings = new Booking[list.size()];
-		  list.toArray(bookings);
+		    bookings = new Booking[list.size()];
+		    list.toArray(bookings);
     	  
       }
     } catch (SQLException e) {
@@ -85,9 +85,10 @@ public class BookingMananger {
   //         uppfæra sætið sem var bókað sem ekki laust.
   public void createBooking(Booking b) 
         throws ClassNotFoundException {
-    // Uppfærum available_seat breytunna í töflunni Airplain
-    String sql = "SELECT availableSeats FROM Airplain WHERE "+
-                 "flightDate IS ? AND flightNumber IS ?;";
+    // Uppfærum availableSeat, wantsFood og needsAssistance
+    // breyturnar í töflunni Airplain
+    String sql = "SELECT availableSeats FROM Airplain WHERE"+
+                 " flightDate IS ? AND flightNumber IS ?;";
     String[] gild = {b.getFlight().getDate().toString(),
       b.getFlight().getFlightNumber()};
     ConnectToBooking(sql, gild, "getSeats");
@@ -98,10 +99,35 @@ public class BookingMananger {
     int s = b.getSeat() - 'A';
     availableSeats = availableSeats.substring(0, r*row+s) + '0' +
                      availableSeats.substring(r*row+s+1);
-    sql = "UPDATE Airplain SET availableSeats=? WHERE " +
-          "flightDate IS ? AND flightNumber IS ?;";
+    // Uppfæra needsAssistance breytuna
+    Boolean[][] na = b.getFlight().getAirplain().getNeedsAssistance();
+    String needsAssistance = "";
+    for(int i=0; i<na.length; i++) {
+      for(int j=0; j<na[0].length; j++) {
+        if(na[i][j]) {
+          needsAssistance = "1" + needsAssistance;
+        } else {
+          needsAssistance = "0" + needsAssistance;
+        }
+      }
+    }
+    Boolean[][] wf = b.getFlight().getAirplain().getWantsFood();
+    String wantsFood = "";
+    for(int i=0; i<na.length; i++) {
+      for(int j=0; j<na[0].length; j++) {
+        if(na[i][j]) {
+          wantsFood = "1" + wantsFood;
+        } else {
+          wantsFood = "0" + wantsFood;
+        }
+      }
+    }
+    sql = "UPDATE Airplain SET availableSeats=?, needsAssistance=?,"+
+          " wantsFood=? WHERE flightDate IS ? AND flightNumber IS ?;";
     String[] gildi = {
       availableSeats, 
+      needsAssistance,
+      wantsFood,
       b.getFlight().getDate().toString(), 
       b.getFlight().getFlightNumber()};
     ConnectToBooking(sql, gildi, "update");
