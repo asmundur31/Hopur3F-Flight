@@ -60,8 +60,6 @@ public class BookingMananger {
     				   fm.flightFromBooking(rs.getString("flight")), 
     				   LocalDateTime.parse(rs.getString("booking_time"))));
     	  }
-    	  
-    	  System.out.println(list.size());
 		    bookings = new Booking[list.size()];
 		    list.toArray(bookings);
     	  
@@ -150,7 +148,6 @@ public class BookingMananger {
   public Booking[] getBookings(Person p) throws ClassNotFoundException {
     // Ef við viljum bjóða uppá að sækja allar bókanir
     // fyrir einhverja manneskju p
-	  System.out.println("getBookings");
 	  String sql = "SELECT * FROM Booking WHERE person IS ?";
 	  String [] gild = { p.getSsn() };
 	  ConnectToBooking(sql, gild, "getBookings");
